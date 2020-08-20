@@ -1,0 +1,196 @@
+---
+title: "estudo"
+author: "Droubi"
+date: "12/08/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(lme4)
+library(lattice)
+library(corrplot)
+library(parameters)
+library(sjPlot)
+library(lfe)
+library(tibble)
+library(ggplot2)
+```
+
+## R Markdown
+
+```{r}
+# Simulação de dados
+set.seed(1)
+# Lote Padrão: 360m2, 12x30
+# Bairros
+a <- 200
+b <- 400
+c <- 600
+d <- 800
+e <- 1000
+f <- 1200
+g <- 1400
+h <- 1600
+i <- 1800
+j <- 2000
+# Frente
+Ft <- seq(10, 35, .25)
+# Fundos
+Prof <- rnorm(1010, mean = 25, sd = 7.5)
+VU <- c(rnorm(101, mean=a, sd=100),
+        rnorm(101, mean=b, sd=100),
+        rnorm(101, mean=c, sd=100),
+        rnorm(101, mean=d, sd=100),
+        rnorm(101, mean=e, sd=100),
+        rnorm(101, mean=f, sd=100),
+        rnorm(101, mean=g, sd=100),
+        rnorm(101, mean=h, sd=100),
+        rnorm(101, mean=i, sd=100),
+        rnorm(101, mean=j, sd=100)
+        )
+```
+
+```{r}
+dados <- tibble(Frente = c(Ft, Ft+2, Ft+4, Ft+6, Ft+8,
+                               Ft+10, Ft+12, Ft+14, Ft+16, Ft+18), 
+                Profundidade = Prof,
+                Area = Frente*Profundidade,
+                ValorUnitario = 1000 + VU - 10*Area + 300*Frente, 
+                Bairro = factor(rep(LETTERS[1:10], each=101))
+                )
+dados <- as.tibble(dados)
+```
+
+## Gráficos
+
+```{r}
+ggplot(dados, aes(x = Frente, y = ValorUnitario, color = Bairro)) +
+        geom_point() + 
+        geom_smooth(method = "lm", se = FALSE)
+```
+
+```{r}
+ggplot(dados, aes(x = Area, y = ValorUnitario, color = Bairro)) +
+        geom_point() + 
+        geom_smooth(method = "lm", se = FALSE)
+```
+
+```{r}
+boxplot(ValorUnitario~Bairro, dados)
+```
+
+## Modelo de efeitos fixos
+
+```{r}
+fit <- lm(ValorUnitario ~ Area + Bairro + Frente, data = dados)
+summary(fit)
+```
+
+## Modelo de efeitos mistos
+
+```{r}
+fit_lmer <- lmer(ValorUnitario ~ Area + Frente + (1|Bairro), data = dados)
+summary(fit_lmer)
+```
+
+```{r}
+ranef(fit_lmer)
+```
+
+```{r}
+fixef(fit_lmer)
+```
+
+
+```{r}
+dotplot(ranef(fit_lmer))
+```
+
+
+## Formulação de Munklak
+
+```{r}
+dados <- cbind(
+        dados,
+        demean(dados, select = "Frente", group = "Bairro")
+)
+dados <- as.tibble(dados)
+```
+
+```{r}
+mundlak <- 
+        lmer(ValorUnitario ~ Area + Frente + Frente_between + (1|Bairro),
+  data = dados,
+  REML = TRUE)
+```
+
+```{r}
+summary(mundlak)
+```
+```{r}
+ranef(mundlak)
+```
+
+## Previsões de valores
+
+
+### Bairro A
+
+```{r}
+summary(dados[which(dados$Bairro == "A"), ])
+```
+
+#### Frente 12m
+
+```{r}
+predict(fit, newdata = data.frame(Area = 360, Frente = 12, Bairro = "A"))
+```
+
+```{r}
+predict(mundlak, 
+        newdata = data.frame(Area = 360, Frente = 12, 
+                             Frente_between = 22.5, Bairro = "A"))
+```
+
+#### Frente 30m
+
+```{r}
+predict(fit, newdata = data.frame(Area = 360, Frente = 30, Bairro = "A"))
+```
+
+```{r}
+predict(mundlak, 
+        newdata = data.frame(Area = 360, Frente = 30, 
+                             Frente_between = 22.5, Bairro = "A"))
+```
+
+### Bairro B
+
+```{r}
+summary(dados[which(dados$Bairro == "B"), ])
+```
+
+#### Frente 12m
+
+```{r}
+predict(fit, newdata = data.frame(Area = 360, Frente = 12, Bairro = "B"))
+```
+
+```{r}
+predict(mundlak, 
+        newdata = data.frame(Area = 360, Frente = 12, 
+                             Frente_between = 23.5, Bairro = "B"))
+```
+
+#### Frente 30m
+
+```{r}
+predict(fit, newdata = data.frame(Area = 360, Frente = 30, Bairro = "B"))
+```
+
+```{r}
+predict(mundlak, 
+        newdata = data.frame(Area = 360, Frente = 30, 
+                             Frente_between = 23.5, Bairro = "B"))
+```
