@@ -4,7 +4,7 @@
 \PassOptionsToPackage{dvipsnames,svgnames*,x11names*}{xcolor}
 %
 \documentclass[
-  a4paper, 11pt]{article}
+  a4paper, 12pt]{article}
 \usepackage{lmodern}
 \usepackage{amssymb,amsmath}
 \usepackage{ifxetex,ifluatex}
@@ -38,7 +38,7 @@
 \IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
 \hypersetup{
   pdftitle={Modelos mistos na Engenharia de Avaliações},
-  pdfauthor={Luiz F. P. Droubi; Carlos Augusto Zilli; Norberto Hoccheim},
+  pdfauthor={Luiz Fernando Palin Droubi; Carlos Augusto Zilli; Norberto Hoccheim},
   colorlinks=true,
   linkcolor=red,
   filecolor=Maroon,
@@ -46,7 +46,7 @@
   urlcolor=magenta,
   pdfcreator={LaTeX via pandoc}}
 \urlstyle{same} % disable monospaced font for URLs
-\usepackage[left=2.5cm,right=2.5cm,top=3cm,bottom=2.5cm]{geometry}
+\usepackage[left=3.5cm,right=2.5cm,top=2.5cm,bottom=2.5cm]{geometry}
 \usepackage{longtable,booktabs}
 % Correct order of tables after \paragraph or \subparagraph
 \usepackage{etoolbox}
@@ -127,11 +127,11 @@
 }
 \makeatother
 \subtitle{Possibilidades e aplicações}
-\author{Luiz F. P. Droubi\footnote{SPU/SC,
-  \href{mailto:lfpdroubi@gmail.com}{\nolinkurl{lfpdroubi@gmail.com}}} \and Carlos Augusto Zilli\footnote{IFSC,
-  \href{mailto:carlos.zilli@ifsc.edu.br}{\nolinkurl{carlos.zilli@ifsc.edu.br}}} \and Norberto Hoccheim\footnote{UFSC,
+\author{Luiz Fernando Palin Droubi\footnote{SPU/SC,
+  \href{mailto:luiz.droubi@planejamento.gov.br}{\nolinkurl{luiz.droubi@planejamento.gov.br}}} \and Carlos Augusto Zilli\footnote{IFSC,
+  \href{mailto:carloszilli@hotmail.com}{\nolinkurl{carloszilli@hotmail.com}}} \and Norberto Hoccheim\footnote{UFSC,
   \href{mailto:hochheim@gmail.com}{\nolinkurl{hochheim@gmail.com}}}}
-\date{28/08/2020}
+\date{27/08/2020}
 
 \begin{document}
 \maketitle
@@ -139,11 +139,11 @@
 \hypertarget{introduuxe7uxe3o}{%
 \section{Introdução}\label{introduuxe7uxe3o}}
 
-Na Engenharia de Avaliações, assim como em diversos ramos das ciências
+Na Engenharia de Avaliaçãoes, assim como em diversos ramos das ciências
 sociais, a abordagem padrão para lidar com a heteregoneidade amostral é
 a modelagem com efeitos fixos. Este tipo de abordagem permite a
 segregação dos dados da amostra em diferentes agrupamentos, no entanto,
-ela não\ldots{}
+ela não
 
 \hypertarget{revisuxe3o-bibliogruxe1fica}{%
 \section{Revisão Bibliográfica}\label{revisuxe3o-bibliogruxe1fica}}
@@ -167,16 +167,14 @@ fixos}\label{modelagem-por-efeitos-fixos}}
 A modelagem por efeitos fixos é frequentemente aplicada na Engenharia de
 Avaliações, assim como em diversas outras áreas da ciência (BELL et al.,
 \protect\hyperlink{ref-bell2019}{2019}, p. 1057), apesar desta
-terminologia não ser normalmente empregada.
-
-Um modelo de efeitos fixos nada mais é do que um modelo em que a
-heterogeneidade da amostra é ``saneada'' através da inclusão de
-variáveis \emph{dummies}\footnote{Neste trabalho as variáveis
-  dicotômicas em grupo serão tratadas simplesmente pelo termo em inglês
-  \emph{dummies}.} representando cada agrupamento de dados. Após a
-inclusão destas variáveis saneando a amostra, ou seja, tornando-a
-homogênea, a estimação é feita pelo métodos dos mínimos quadrados
-ordinários.
+terminologia não ser normalmente empregada. Um modelo de efeitos fixos
+nada mais é do que um modelo em que a heterogeneidade da amostra é
+``saneada'' através da inclusão de variáveis \emph{dummies}\footnote{Neste
+  trabalho as variáveis dicotômicas em grupo serão tratadas simplesmente
+  pelo termo em inglês \emph{dummies}.} representando cada agrupamento
+de dados. Após a inclusão destas variáveis saneando a amostra, ou seja,
+tornando-a homogênea, a estimação é feita pelo métodos dos mínimos
+quadrados ordinários.
 
 A modelagem por efeitos fixos pode ser escrita conforme a equação
 \ref{eq:fixef}, onde a variância entre os agrupamentos de dados
@@ -210,7 +208,7 @@ perde-se um grau de liberdade na estimação de um intercepto para cada
 bairro, quando se pode utilizar um nível de referência e estimar apenas
 a diferença entre os níveis de cada agrupamento em relação a este nível
 de referência, como ilustrado na equação \ref{eq:fixef3} (BELL et al.,
-\protect\hyperlink{ref-bell2019}{2019}, p. 1058):
+\protect\hyperlink{ref-bell2019}{2019}, p. 1058).
 
 \begin{equation} \label{eq:fixef3}
 (y_{ij} - \bar{y}_i) = \beta_1 (x_{ij} - \bar{x}_j) + (\epsilon_{ij}) 
@@ -221,10 +219,10 @@ de referência, como ilustrado na equação \ref{eq:fixef3} (BELL et al.,
 mistos}\label{modelagem-por-efeitos-mistos}}
 
 Existem diversas maneiras de utilização da modelagem por efeitos mistos.
-Neste trabalho apresentam-se as diversas possibilidades, desde a
-abordagem mais simples, que possibilita uma melhor comparação com o
+Neste trabalho apresenta-se as diversas possibilidades, desde a
+abordagem mais simples, que possibilita uma comparação direta com o
 modelo de efeitos fixos, muito conhecido na Engenharia de Avaliações,
-até a abordagem mais complexa, a formulação REWB.
+até a abordagem mais complexa, a formulação REWB
 
 \hypertarget{modelo-de-efeitos-mistos-simples}{%
 \subsubsection{Modelo de efeitos mistos
@@ -232,7 +230,7 @@ simples}\label{modelo-de-efeitos-mistos-simples}}
 
 A modelagem por efeitos mistos considera, além dos efeitos fixos, um
 termo de efeitos aleatórios (BELL et al.,
-\protect\hyperlink{ref-bell2019}{2019}, p. 1059). Uma das maneiras de
+\protect\hyperlink{ref-bell2019}{2019}, p. 1057). Uma das maneiras de
 escrever a formulação de efeitos mistos pode ser vista na equação
 \ref{eq:mixef}.
 
@@ -307,77 +305,59 @@ coeficientes das variáveis explicativas (BELL et al.,
 \subsubsection{Formulação de
 Mundlak}\label{formulauxe7uxe3o-de-mundlak}}
 
-Esta formulação consiste da introdução de um termo adicional à parte
-macro do modelo, que leva em conta a variação entre os grupos
-(\emph{between effect}), de maneira que a equação \ref{eq:macro}
-torna-se:
-
-\begin{equation} \label{eq:macro2}
-\beta_{0j} = \beta_0 + \beta_2 z_{j} + \beta_3 \bar{x}_j + \upsilon_{j} 
-\end{equation}
-
-A combinação das equações \ref{eq:micro} e \ref{eq:macro2} toma a forma
-da equação \ref{eq:mundlak}, que é conhecida na literatura como
-formulação de Mundlak (BELL; JONES,
-\protect\hyperlink{ref-bell2015}{2015}, p. 1055):
+Uma maneira mais adequada de escrever a formulação de modelos mistos
+consiste na separação dos efeitos dentro dos agrupamentos dos efeitos
+entre os agrupamentos, o que é conhecido na literatura por formulação
+\emph{within-between}. Esta formulação é a mais genérica, capaz de
+modelar diversos efeitos e é particularmente interessante na análise de
+dados em painéis ou séries temporais, e será apresentada no próximo
+item. No caso de dados em seção transversal, no entanto, esta formulação
+pode ser ligeiramente modificada como mostrado na equação
+\ref{eq:mundlak}, o que é conhecido na literatura como formulação de
+Mundlak (BELL et al., \protect\hyperlink{ref-bell2019}{2019}, p. 1055):
 
 \begin{equation} \label{eq:mundlak}
-y_{ij} = \beta_0 + \beta_{1} x_{ij} + \beta_{3}\bar{x}_j+ \beta_2 z_j + (\upsilon_j + \epsilon_{ij}) 
+y_{ij} = \beta_0 + \beta_{1W} x_{ij} + \beta_{2C}\bar{x}_i+ \beta_3 z_i + (\upsilon_i + \epsilon_{ij}) 
 \end{equation}
 
-Segundo Bell \emph{et al.} (BELL et al.,
-\protect\hyperlink{ref-bell2019}{2019}, p. 1055), na formulação de
-Mundlak o efeito contextual, representado na equação \ref{eq:mundlak}
-pelo termo \(\beta_{3}\) (algumas vezes escrito como \(\beta_{C}\)), é
-de interesse, pois mostra a \emph{diferença} entre os efeitos dentro
-(\emph{within effect}) e entre (\emph{between effect}) os grupos.
+Segundo BELL et al. (\protect\hyperlink{ref-bell2019}{2019}, p. 1055),
+na formulação de Mundlak o efeito contextual, representado na equação
+\ref{eq:mundlak} pelo termo \(\beta_{2C}\), é de interesse. O que este
+termo modela é como uma mudança de contexto (no caso da Engenharia de
+Avaliações, uma mudança de bairros, por exemplo), afeta o valor de um
+indivíduo (neste caso, imóveis).
 
-Na prática, segundo Bell \emph{et al.} (BELL et al.,
-\protect\hyperlink{ref-bell2019}{2019}, p. 1057), os modelos de Mundlak
-e os modelos de efeitos fixos estimarão exatamente os mesmos valores
-para os coeficientes de efeitos dentro dos agrupamentos (\emph{within
-effects}), representado na formulação acima pelo termo \(\beta_1\)
-(algumas vezes escrito \(\beta_{W}\)).
-
-Esta formulação, segundo Bell \emph{et al.}
-(\protect\hyperlink{ref-bell2015}{2015}, p. 1056), é particularmente
-interessante para a análise de dados em seção transversal, pois o
-coeficiente \(\beta_C\) representa o efeito da mundança de grupo de um
-indivíduo, mantidas as suas características. Na Engenharia de
-Avaliações, por exemplo, o valor de \(\beta_C\) pode representas o
-quanto um lote-padrão aumentaria (ou diminuiria) de valor se ele
-pertencesse a um outro bairro ou zona, o que é particularmente
-interessante para a confecção de planta de valores genéricos.
+Na prática, segundo BELL et al. (\protect\hyperlink{ref-bell2019}{2019},
+p. 1057), os modelos de Mundlak e os modelos de efeitos fixos estimarão
+exatamente os mesmos valores para os coeficientes de efeitos dentro dos
+agrupamentos (\emph{within effects}), representado na formulação acima
+pelo termo \(\beta_{1W}\).
 
 \hypertarget{formulauxe7uxe3o-within-between}{%
 \subsubsection{Formulação
 Within-Between}\label{formulauxe7uxe3o-within-between}}
 
-Uma maneira às vezes mais adequada de escrever a formulação de modelos
-mistos consiste na separação total dos efeitos dentro dos agrupamentos
-dos efeitos entre os agrupamentos, o que é conhecido na literatura por
-formulação \emph{within-between}. Esta formulação é a mais genérica,
-capaz de modelar diversos efeitos separadamente e é particularmente
-interessante na análise de dados em painéis ou séries temporais, dada a
-sua melhor interpretabilidade para estes tipos de dados (BELL; JONES,
-\protect\hyperlink{ref-bell2015}{2015}, p. 143).
+A formulação \emph{within-between} (REWB) é a mais genérica, normalmente
+utilizada para o ajuste de modelos com dados em painéis, onde os
+indivíduos (\(i\)) são medidos em múltiplas ocasiões (\(t\)). Esta
+formulação é capaz de distinguir entre os efeitos dentro (\emph{within
+effects}) e entre (\emph{between effects}) cada agrupamento.
 
-Partindo da formulação de Mundlak, os efeitos \emph{within} e
-\emph{between} podem ter seus efeitos totalmente separados pela divisão
-do coeficiente \(\beta_3\) da equação \ref{eq:mundlak}, escrevendo-o
-explicitamente como uma diferença em relação ao coeficiente \(\beta_1\),
-conforme mostrado pela equação \ref{eq:rewb1}
+Na equação \ref{eq:rewb} (BELL et al.,
+\protect\hyperlink{ref-bell2019}{2019}, p. 1055) então, os dados estão
+agrupados em painéis, não em unidades geográficas, como na formulação de
+Mundlak apresentada no item anterior.
 
-\begin{equation} \label{eq:rewb1}
-y_{ij} = \beta_0 + \beta_1 x_{ij} + (\beta_{4} - \beta_1) \bar{x}_j+ \beta_2 z_j + (\upsilon_j + \epsilon_{it}) 
+\begin{equation} \label{eq:rewb}
+y_{it} = \beta_0 + \beta_{1W} (x_{it} - \bar{x}_i) + \beta_{2B}\bar{x}_i+ \beta_3 z_i + (\upsilon_i + \epsilon_{it}) 
 \end{equation}
 
-Rearranjando conveniente a equação \ref{eq:rewb1}, chega-se à formulação
-REWB, como mostra a equação \ref{eq:rewb2}:
-
-\begin{equation} \label{eq:rewb1}
-y_{ij} = \beta_0 + \beta_1 (x_{ij} - \bar{x}_j) + \beta_4 \bar{x}_j+ \beta_2 z_j + (\upsilon_j + \epsilon_{it}) 
-\end{equation}
+Onde \(\beta_{1W}\) representa o efeito médio entre os indivíduos dentro
+(\emph{within}) dos agrupamentos e \(\beta_{2B}\) representa o efeito
+entre (\emph{between}) os agrupamentos. No caso de dados em paínéis,
+\(\beta_{1W}\) representa o efeito num período e \(\beta_{2B}\)
+representa o efeito entre os períodos para a variável não-estacionária
+\(x_{it}\).
 
 É possível ainda a construção de um modelo ainda mais genérico que
 permite não apenas a modelagem de interceptos aleatórios mas também a
@@ -385,20 +365,20 @@ modelagem de coeficientes aleatórios, como descrito na equação
 \ref{eq:rewb2}:
 
 \begin{equation} \label{eq:rewb2}
-y_{ij} = \mu + \beta_{W} (x_{ij} - \bar{x}_j) + \beta_{B}\bar{x}_j+ 
-\beta_2 z_j + \upsilon_{j0} + \upsilon_{j1} (x_{ij} - \bar{x}_j) + \epsilon_{ij0} 
+y_{it} = \mu + \beta_{1W} (x_{it} - \bar{x}_i) + \beta_{2B}\bar{x}_i+ 
+\beta_3 z_i + \upsilon_{i0} + \upsilon_{i1} (x_{it} - \bar{x}_i) + \epsilon_{it0} 
 \end{equation}
 
-Onde o termo \(\upsilon_{j0}\) está relacionado à aleatoriedade do
-intercepto e o termo \(\upsilon_{j1}\) está relacionado à aleatoriedade
+Onde o termo \(\upsilon_{i0}\) está relacionado à aleatoriedade do
+intercepto e o termo \(\upsilon_{i1}\) está relacionado à aleatoriedade
 do coeficiente da variável \(x\).
 
-\hypertarget{considerauxe7uxf5es-sobre-a-pertinuxeancia-de-cada-modelagem}{%
-\subsection{Considerações sobre a pertinência de cada
-modelagem}\label{considerauxe7uxf5es-sobre-a-pertinuxeancia-de-cada-modelagem}}
+\hypertarget{considerauxe7uxf5es-sobre-a-pertinuxeancia-de-utilizauxe7uxe3o-de-cada-modelagem}{%
+\subsection{Considerações sobre a pertinência de utilização de cada
+modelagem}\label{considerauxe7uxf5es-sobre-a-pertinuxeancia-de-utilizauxe7uxe3o-de-cada-modelagem}}
 
-Segundo Bell e Jones (\protect\hyperlink{ref-bell2015}{2015}, p. 143),
-um modelo de efeitos fixos pode ser visto como uma forma de modelo de
+Segundo BELL; JONES (\protect\hyperlink{ref-bell2015}{2015}, p. 143), um
+modelo de efeitos fixos pode ser visto como uma forma de modelo de
 efeitos mistos onde a variância nos níveis mais altos é restringida, de
 maneira que para BELL; JONES (\protect\hyperlink{ref-bell2015}{2015}) os
 modelos de efeitos mistos são muito mais interessantes do que os modelos
@@ -407,14 +387,14 @@ modelos de efeitos fixos propriciam, eles ainda tem possibilidade de ir
 além e fornecer outras informações que os modelos de efeitos fixos não
 fornecem, como a separação dos efeitos de uma variável entre (efeito
 \emph{between}) os agrupamentos e dentro (efeito \emph{within}) dos
-agrupramentos. Para Bell \emph{et al.}
-(\protect\hyperlink{ref-bell2019}{2019}, p. 1060), para o efeito dentro
-dos agrupamentos (\emph{within effect}), os resultados estimados pela
-formulação REWB ou pela formulação de Mundlak serão rigorosamente os
-mesmos obtidos pelo modelo de efeitos fixos. No entanto, enquanto os
-modelos de REWB e de Munlak fornecem informações a respeitos dos efeitos
-entre os agrupamentos (\emph{between effects}), os modelos de efeitos
-fixos não são capazes de fornecer qualquer informação a este respeito.
+agrupramentos. Para BELL et al. (\protect\hyperlink{ref-bell2019}{2019},
+p. 1060), para o efeito dentro dos agrupamentos (\emph{within effect}),
+os resultados estimados pela formulação REWB ou pela formulação de
+Mundlak serão rigorosamente os mesmos obtidos pelo modelo de efeitos
+fixos. No entanto, enquanto os modelos de REWB e de Munlak fornecem
+informações a respeitos dos efeitos entre os agrupamentos (\emph{between
+effects}), os modelos de efeitos fixos não são capazes de fornecer
+qualquer informação a este respeito.
 
 Deve ser observado que a hipótese de modelar os diversos agrupamentos
 como uma variável aleatória é razoável apenas quando o número de
@@ -434,11 +414,11 @@ faz sentido utilizar estas formulações e a formulação simples de efeitos
 mistos (equação \ref{eq:mixef}) deve ser a adotada (BELL et al.,
 \protect\hyperlink{ref-bell2019}{2019}, p. 1058).
 
-\hypertarget{estimauxe7uxe3o-em-modelos-mistos}{%
-\subsection{Estimação em modelos
-mistos}\label{estimauxe7uxe3o-em-modelos-mistos}}
+\hypertarget{considerauxe7uxf5es-a-respeito-da-estimauxe7uxe3o-em-modelos-mistos}{%
+\subsection{Considerações a respeito da estimação em modelos
+mistos}\label{considerauxe7uxf5es-a-respeito-da-estimauxe7uxe3o-em-modelos-mistos}}
 
-Segundo Clark (\protect\hyperlink{ref-clark2019shrinkage}{2019}), a
+Segundo CLARK (\protect\hyperlink{ref-clark2019shrinkage}{2019}), a
 estimação em modelos mistos é feita à partir do encolhimento.
 
 \hypertarget{estudo-de-caso}{%
@@ -452,112 +432,112 @@ versão 4.0.2 (R CORE TEAM, \protect\hyperlink{ref-R}{2020}).
 \subsection{Criação de dados via
 simulação}\label{criauxe7uxe3o-de-dados-via-simulauxe7uxe3o}}
 
-Foram criados 500 dados de lotes, divididos igualmente em 10 bairros, a
+Foram criados 550 dados de lotes, divididos igualmente em 11 bairros, a
 partir de simulação com o auxílio do software \textbf{R}.
 
 Os dados foram criados conforme parâmetros da tabela 1:
 
 \begin{longtable}[]{@{}lrcrc@{}}
 \toprule
-\begin{minipage}[b]{0.17\columnwidth}\raggedright
+\begin{minipage}[b]{0.18\columnwidth}\raggedright
 Variável\strut
-\end{minipage} & \begin{minipage}[b]{0.11\columnwidth}\raggedleft
+\end{minipage} & \begin{minipage}[b]{0.12\columnwidth}\raggedleft
 Tipo\strut
-\end{minipage} & \begin{minipage}[b]{0.10\columnwidth}\centering
+\end{minipage} & \begin{minipage}[b]{0.11\columnwidth}\centering
 Distribuição\strut
-\end{minipage} & \begin{minipage}[b]{0.27\columnwidth}\raggedleft
+\end{minipage} & \begin{minipage}[b]{0.25\columnwidth}\raggedleft
 Parâmetros\strut
-\end{minipage} & \begin{minipage}[b]{0.20\columnwidth}\centering
-Obs.\strut
+\end{minipage} & \begin{minipage}[b]{0.21\columnwidth}\centering
+Obs\strut
 \end{minipage}\tabularnewline
 \midrule
 \endhead
-\begin{minipage}[t]{0.17\columnwidth}\raggedright
+\begin{minipage}[t]{0.18\columnwidth}\raggedright
 Área (\(A\))\strut
-\end{minipage} & \begin{minipage}[t]{0.11\columnwidth}\raggedleft
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedleft
 Quantitativa\strut
-\end{minipage} & \begin{minipage}[t]{0.10\columnwidth}\centering
+\end{minipage} & \begin{minipage}[t]{0.11\columnwidth}\centering
 Normal\strut
-\end{minipage} & \begin{minipage}[t]{0.27\columnwidth}\raggedleft
-\(\mu = 400 \ @ \ 500, \sigma = 50\)\strut
-\end{minipage} & \begin{minipage}[t]{0.20\columnwidth}\centering
+\end{minipage} & \begin{minipage}[t]{0.25\columnwidth}\raggedleft
+\(\mu = 400, \sigma = 50\)\strut
+\end{minipage} & \begin{minipage}[t]{0.21\columnwidth}\centering
 -\strut
 \end{minipage}\tabularnewline
-\begin{minipage}[t]{0.17\columnwidth}\raggedright
+\begin{minipage}[t]{0.18\columnwidth}\raggedright
 Bairro\strut
-\end{minipage} & \begin{minipage}[t]{0.11\columnwidth}\raggedleft
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedleft
 Qualitativa\strut
-\end{minipage} & \begin{minipage}[t]{0.10\columnwidth}\centering
+\end{minipage} & \begin{minipage}[t]{0.11\columnwidth}\centering
 -\strut
-\end{minipage} & \begin{minipage}[t]{0.27\columnwidth}\raggedleft
-A a J\strut
-\end{minipage} & \begin{minipage}[t]{0.20\columnwidth}\centering
+\end{minipage} & \begin{minipage}[t]{0.25\columnwidth}\raggedleft
+A a K\strut
+\end{minipage} & \begin{minipage}[t]{0.21\columnwidth}\centering
 -\strut
 \end{minipage}\tabularnewline
-\begin{minipage}[t]{0.17\columnwidth}\raggedright
+\begin{minipage}[t]{0.18\columnwidth}\raggedright
 Áreas Verdes (\(A_V\))\strut
-\end{minipage} & \begin{minipage}[t]{0.11\columnwidth}\raggedleft
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedleft
 Quantitativa\strut
-\end{minipage} & \begin{minipage}[t]{0.10\columnwidth}\centering
+\end{minipage} & \begin{minipage}[t]{0.11\columnwidth}\centering
 Uniforme\strut
-\end{minipage} & \begin{minipage}[t]{0.27\columnwidth}\raggedleft
-\(\mu = 0,2 \quad a \quad 0,65\)\strut
-\end{minipage} & \begin{minipage}[t]{0.20\columnwidth}\centering
+\end{minipage} & \begin{minipage}[t]{0.25\columnwidth}\raggedleft
+\(\mu = 0,2 \quad a \quad 0,70\)\strut
+\end{minipage} & \begin{minipage}[t]{0.21\columnwidth}\centering
 Um valor para cada bairro\strut
 \end{minipage}\tabularnewline
-\begin{minipage}[t]{0.17\columnwidth}\raggedright
+\begin{minipage}[t]{0.18\columnwidth}\raggedright
 \(\beta_{0}\)\strut
-\end{minipage} & \begin{minipage}[t]{0.11\columnwidth}\raggedleft
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedleft
 Coeficiente\strut
-\end{minipage} & \begin{minipage}[t]{0.10\columnwidth}\centering
+\end{minipage} & \begin{minipage}[t]{0.11\columnwidth}\centering
 Discreta\strut
-\end{minipage} & \begin{minipage}[t]{0.27\columnwidth}\raggedleft
-2500\strut
-\end{minipage} & \begin{minipage}[t]{0.20\columnwidth}\centering
+\end{minipage} & \begin{minipage}[t]{0.25\columnwidth}\raggedleft
+2000\strut
+\end{minipage} & \begin{minipage}[t]{0.21\columnwidth}\centering
 -\strut
 \end{minipage}\tabularnewline
-\begin{minipage}[t]{0.17\columnwidth}\raggedright
+\begin{minipage}[t]{0.18\columnwidth}\raggedright
 \(\upsilon\)\strut
-\end{minipage} & \begin{minipage}[t]{0.11\columnwidth}\raggedleft
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedleft
 Termo de erro\strut
-\end{minipage} & \begin{minipage}[t]{0.10\columnwidth}\centering
+\end{minipage} & \begin{minipage}[t]{0.11\columnwidth}\centering
 Normal\strut
-\end{minipage} & \begin{minipage}[t]{0.27\columnwidth}\raggedleft
+\end{minipage} & \begin{minipage}[t]{0.25\columnwidth}\raggedleft
 \(\mu = 0, \sigma = 50\)\strut
-\end{minipage} & \begin{minipage}[t]{0.20\columnwidth}\centering
+\end{minipage} & \begin{minipage}[t]{0.21\columnwidth}\centering
 -\strut
 \end{minipage}\tabularnewline
-\begin{minipage}[t]{0.17\columnwidth}\raggedright
+\begin{minipage}[t]{0.18\columnwidth}\raggedright
 \(\beta_{0j}\)\strut
-\end{minipage} & \begin{minipage}[t]{0.11\columnwidth}\raggedleft
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedleft
 Coeficiente\strut
-\end{minipage} & \begin{minipage}[t]{0.10\columnwidth}\centering
+\end{minipage} & \begin{minipage}[t]{0.11\columnwidth}\centering
 Não definida\strut
-\end{minipage} & \begin{minipage}[t]{0.27\columnwidth}\raggedleft
-\(\beta_0 + 4000A_{Vj} - 3.5 \overline{A_j} + \upsilon_j\)\strut
-\end{minipage} & \begin{minipage}[t]{0.20\columnwidth}\centering
+\end{minipage} & \begin{minipage}[t]{0.25\columnwidth}\raggedleft
+\(\beta_0 + 3000A_V + \upsilon\)\strut
+\end{minipage} & \begin{minipage}[t]{0.21\columnwidth}\centering
 -\strut
 \end{minipage}\tabularnewline
-\begin{minipage}[t]{0.17\columnwidth}\raggedright
+\begin{minipage}[t]{0.18\columnwidth}\raggedright
 \(\epsilon\)\strut
-\end{minipage} & \begin{minipage}[t]{0.11\columnwidth}\raggedleft
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedleft
 Termo de erro\strut
-\end{minipage} & \begin{minipage}[t]{0.10\columnwidth}\centering
+\end{minipage} & \begin{minipage}[t]{0.11\columnwidth}\centering
 Normal\strut
-\end{minipage} & \begin{minipage}[t]{0.27\columnwidth}\raggedleft
+\end{minipage} & \begin{minipage}[t]{0.25\columnwidth}\raggedleft
 \(\mu = 0, \sigma = 100\)\strut
-\end{minipage} & \begin{minipage}[t]{0.20\columnwidth}\centering
+\end{minipage} & \begin{minipage}[t]{0.21\columnwidth}\centering
 -\strut
 \end{minipage}\tabularnewline
-\begin{minipage}[t]{0.17\columnwidth}\raggedright
+\begin{minipage}[t]{0.18\columnwidth}\raggedright
 Valor Unitário (\(VU\))\strut
-\end{minipage} & \begin{minipage}[t]{0.11\columnwidth}\raggedleft
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedleft
 Quantitativa\strut
-\end{minipage} & \begin{minipage}[t]{0.10\columnwidth}\centering
+\end{minipage} & \begin{minipage}[t]{0.11\columnwidth}\centering
 Não definida\strut
-\end{minipage} & \begin{minipage}[t]{0.27\columnwidth}\raggedleft
+\end{minipage} & \begin{minipage}[t]{0.25\columnwidth}\raggedleft
 \(\beta_{0j} - 3,0 A + \epsilon\)\strut
-\end{minipage} & \begin{minipage}[t]{0.20\columnwidth}\centering
+\end{minipage} & \begin{minipage}[t]{0.21\columnwidth}\centering
 -\strut
 \end{minipage}\tabularnewline
 \bottomrule
@@ -598,14 +578,13 @@ Com os dados gerados, foi elaborado um modelo de efeitos fixos sem
 intercepto, apenas para que fique claro o valor do intercepto aleatório
 de cada bairro. Para dar interpretação a estes interceptos aleatórios, a
 variável \(Area\) foi centralizada em relação à área de um lote-padrão,
-considerado de 400 \(m^2\)\footnote{A centralização de variáveis aqui
+considerado de 400 \(m^2\).\footnote{A centralização de variáveis aqui
   presente não pretende nenhuma separação entre efeitos \emph{within} e
   \emph{between}, mas apenas possibilitar uma interpretação para os
-  valores do coeficientes dos interceptos para cada bairro. Ver Droubi
-  \emph{et al.} (\protect\hyperlink{ref-droubi2019}{2019}) para mais
-  detalhes sobre este tipo de centralização.}
-
-O modelo é descrito pela equação \ref{eq:fixefEC}:
+  valores do coeficientes dos interceptos para cada bairro. Ver DROUBI
+  et al. (\protect\hyperlink{ref-droubi2019}{2019}) para mais detalhes
+  sobre este tipo de centralização.} O modelo é descrito pela equação
+\ref{eq:fixefEC}:
 
 \begin{equation} \label{eq:fixefEC}
 ValorUnitario = \beta_1 (Area - 400) + \beta_{2i}Bairro_i + \epsilon
@@ -636,9 +615,9 @@ ValorUnitario = \beta_0 + \beta_1 (Area - 400) + \upsilon_i + \epsilon
 Onde \(\upsilon_i\) é uma variável aleatória que foi utilizada para
 modelar os diferentes bairros.
 
-\hypertarget{modelo-misto-com-variuxe1vel-de-segundo-nuxedvel}{%
-\paragraph{Modelo misto com variável de segundo
-nível}\label{modelo-misto-com-variuxe1vel-de-segundo-nuxedvel}}
+\hypertarget{modelo-misto-com-variuxe1veis-de-segundo-nuxedvel}{%
+\paragraph{Modelo misto com variáveis de segundo
+nível}\label{modelo-misto-com-variuxe1veis-de-segundo-nuxedvel}}
 
 Foi elaborado um modelo misto simples, porém com a presença de variáveis
 de segundo nível hierárquico, como demonstrado na equação
@@ -684,26 +663,27 @@ fixos (coluna (1)).
  & \textit{} & \multicolumn{3}{c}{\textit{mixed-effects}} \\ 
 \\[-1.8ex] & (1) & (2) & (3) & (4)\\ 
 \hline \\[-1.8ex] 
- Intercepto &  & 1.861,70 (214,20)$^{***}$ & 259,79 (204,01)$^{*}$ & 3.428,45 (371,57)$^{***}$ \\ 
-  (Area - 400) & $-$2,92 (0,10)$^{***}$ & $-$2,94 (0,10)$^{***}$ & $-$2,95 (0,10)$^{***}$ &  \\ 
-  Bairro A & 1.185,02 (15,39)$^{***}$ &  &  &  \\ 
-  Bairro B & 1.283,46 (15,67)$^{***}$ &  &  &  \\ 
-  Bairro C & 1.409,95 (15,92)$^{***}$ &  &  &  \\ 
-  Bairro D & 1.505,32 (17,16)$^{***}$ &  &  &  \\ 
-  Bairro E & 1.661,76 (18,08)$^{***}$ &  &  &  \\ 
-  Bairro F & 1.857,19 (18,40)$^{***}$ &  &  &  \\ 
-  Bairro G & 2.089,09 (17,23)$^{***}$ &  &  &  \\ 
-  Bairro H & 2.405,77 (16,11)$^{***}$ &  &  &  \\ 
-  Bairro I & 2.770,98 (15,49)$^{***}$ &  &  &  \\ 
-  Bairro J & 2.984,74 (15,38)$^{***}$ &  &  &  \\ 
-  Area &  &  &  & $-$2,94 (0,10)$^{***}$ \\ 
-  Area (contexto) &  &  &  & $-$4,45 (0,81)$^{***}$ \\ 
-  Area Verde &  &  & 3.901,65 (467,16)$^{***}$ & 3.940,15 (205,04)$^{***}$ \\ 
+ Intercepto &  & 2.116,84 (155,18)$^{***}$ & 788,85 (18,13)$^{***}$ & 1.858,21 (597,46)$^{***}$ \\ 
+  (Area - 400) & $-$2,99 (0,09)$^{***}$ & $-$3,00 (0,10)$^{***}$ & $-$3,00 (0,10)$^{***}$ &  \\ 
+  Bairro A & 1.379,72 (15,41)$^{***}$ &  &  &  \\ 
+  Bairro B & 1.530,98 (15,41)$^{***}$ &  &  &  \\ 
+  Bairro C & 1.696,18 (15,42)$^{***}$ &  &  &  \\ 
+  Bairro D & 1.891,57 (15,41)$^{***}$ &  &  &  \\ 
+  Bairro E & 1.982,52 (15,40)$^{***}$ &  &  &  \\ 
+  Bairro F & 2.133,79 (15,41)$^{***}$ &  &  &  \\ 
+  Bairro G & 2.313,13 (15,41)$^{***}$ &  &  &  \\ 
+  Bairro H & 2.457,33 (15,40)$^{***}$ &  &  &  \\ 
+  Bairro I & 2.597,51 (15,41)$^{***}$ &  &  &  \\ 
+  Bairro J & 2.741,39 (15,40)$^{***}$ &  &  &  \\ 
+  Bairro K & 2.901,56 (15,40)$^{***}$ &  &  &  \\ 
+  Area &  &  &  & $-$3,00 (0,10)$^{***}$ \\ 
+  Area (between) &  &  &  & 0,32 (1,48) \\ 
+  Area Livre &  &  & 3.018,16 (38,65)$^{***}$ & 3.021,14 (43,42)$^{***}$ \\ 
  \hline \\[-1.8ex] 
-Observations & 500 & 450 & 450 & 450 \\ 
-Log Likelihood &  & $-$2.781,72 & $-$2.765,12 & $-$2.758,14 \\ 
-Akaike Inf. Crit. & 6.120,87 & 5.571,44 & 5.540,23 & 5.528,27 \\ 
-Bayesian Inf. Crit. & 6.171,44 & 5.587,87 & 5.560,78 & 5.552,93 \\ 
+Observations & 550 & 500 & 500 & 500 \\ 
+Log Likelihood &  & $-$3.094,33 & $-$3.055,32 & $-$3.054,02 \\ 
+Akaike Inf. Crit. & 6.734,21 & 6.196,66 & 6.120,65 & 6.120,04 \\ 
+Bayesian Inf. Crit. & 6.790,23 & 6.213,51 & 6.141,72 & 6.145,33 \\ 
 \hline 
 \hline \\[-1.8ex] 
 \textit{Note:}  & \multicolumn{4}{r}{$^{*}$p$<$0,3; $^{**}$p$<$0,2; $^{***}$p$<$0,1} \\ 
@@ -734,16 +714,16 @@ bairro.
 \caption{Efeitos aleatórios do modelo.}\label{fig:dotplot}
 \end{figure}
 
-\begin{table}
+\begin{table}[H]
 
 \caption{\label{tab:somaitcpt}Valores dos interceptos para cada bairro.}
 \centering
 \fontsize{10}{12}\selectfont
-\begin{tabular}[t]{rrrrrrrrr}
+\begin{tabular}[t]{rrrrrrrrrr}
 \toprule
-A & B & C & D & E & F & G & I & J\\
+A & B & C & D & E & F & G & I & J & K\\
 \midrule
-1.185,5 & 1.284,3 & 1.410,9 & 1.506,9 & 1.663,5 & 1.859 & 2.090,3 & 2.770,8 & 2.984,1\\
+\rowcolor{gray!6}  -736,4 & -585,2 & -420,3 & -225 & -134,2 & 17 & 196,1 & 480,2 & 623,9 & 783,9\\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -753,7 +733,7 @@ mistos é a componente de variância devido à localidade, separada da
 variância ao nível dos imóveis, o que pode ser visto na tabela
 \ref{tab:variancias}.
 
-\begin{table}
+\begin{table}[H]
 
 \caption{\label{tab:variancias}Efeitos randômicos do modelo misto.}
 \centering
@@ -761,8 +741,8 @@ variância ao nível dos imóveis, o que pode ser visto na tabela
 \toprule
 grp & vcov & sdcor\\
 \midrule
-\rowcolor{gray!6}  Bairro & 412.441,97 & 642,22\\
-Residual & 12.123,29 & 110,11\\
+\rowcolor{gray!6}  Bairro & 240.555,13 & 490,46\\
+Residual & 12.105,17 & 110,02\\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -800,7 +780,7 @@ houver de fato variabilidade entre os agrupamentos. Fosse o caso da
 localização por bairros não afetar na formação final de preços, o valor
 estimado para o desvio-padrão do efeito aleatório \(\upsilon\) seria
 igual a zero, \emph{i. e.} \(\hat \sigma_\upsilon = 0\) (BATES,
-\protect\hyperlink{ref-Batesbook}{2010}, pp.~10--11) situação em que o
+\protect\hyperlink{ref-Batesbook}{2010}, pp. 10--11) situação em que o
 modelo misto degenera para um modelo de regressão linear ordinária.
 
 Outra maneira de se testar a pertinência da formulação de Mundlak seria
@@ -817,13 +797,14 @@ constantes da última coluna.
 
 \caption{\label{tab:anova}Análise de Variância.}
 \centering
+\fontsize{10}{12}\selectfont
 \begin{tabular}[t]{lrrrrrrrr}
 \toprule
   & npar & AIC & BIC & logLik & deviance & Chisq & Df & Pr(>Chisq)\\
 \midrule
-\rowcolor{gray!6}  fit\_lmer & 4 & 5.581,24 & 5.597,67 & -2.786,62 & 5.573,24 & NA & NA & NA\\
-fit\_lmer2 & 5 & 5.561,69 & 5.582,24 & -2.775,85 & 5.551,69 & 21,54 & 1 & 0\\
-\rowcolor{gray!6}  mundlak & 6 & 5.547,46 & 5.572,12 & -2.767,73 & 5.535,46 & 16,23 & 1 & 0\\
+\rowcolor{gray!6}  fit\_lmer & 4 & 6.196,66 & 6.213,51 & -3.094,33 & 6.188,66 & NA & NA & NA\\
+fit\_lmer2 & 5 & 6.132,27 & 6.153,34 & -3.061,14 & 6.122,27 & 66,39 & 1 & 0,0\\
+\rowcolor{gray!6}  mundlak & 6 & 6.134,20 & 6.159,49 & -3.061,10 & 6.122,20 & 0,07 & 1 & 0,8\\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -832,11 +813,11 @@ Por último, porém não menos relevante, percebe-se que este modelo tem
 critérios de informação de Akaike (AIC) e de Bayes (BIC) melhores que os
 dois modelos iniciais.
 
-Nas Figuras \ref{fig:pr} e \ref{fig:pr1} podem ser vistos os gráficos de
-densidades para os parâmetros estimados pelos modelos de efeitos mistos
-simples e com variável de segundo nível, respectivamente. Nota-se que a
-ausência da variável de segundo nível levou o modelo de efeitos mistos
-simples a uma má estimação da distribuição da variável
+Nas Figuras \ref{fig:pr1} e \ref{fig:pr2} podem ser vistos os gráficos
+de densidades para os parâmetros estimados pelos modelos de efeitos
+mistos simples e com variável de segundo nível, respectivamente. Nota-se
+que a ausência da variável de segundo nível levou o modelo de efeitos
+mistos simples a uma má estimação da distribuição da variável
 \(\sigma_\upsilon\) (no gráfico \(\sigma_1\)), ficando esta longe da
 normalidade. Com o acréscimo da variável de segundo nível esta variável
 ficou com magnitude bem menor, ou seja, a introdução da variável de
@@ -844,28 +825,20 @@ segundo nível reduziu a variação não-explicada pelo modelo.
 
 \begin{figure}[H]
 
-{\centering \includegraphics[width=0.7\linewidth]{images/pr-1} 
+{\centering \includegraphics[width=0.66\linewidth]{images/pr1-1} 
 
 }
 
-\caption{Densidades dos parâmetros do modelo de efeitos mistos simples.}\label{fig:pr}
+\caption{Densidades dos parâmetros do modelo de efeitos mistos simples}\label{fig:pr1}
 \end{figure}
 
 \begin{figure}[H]
 
-{\centering \includegraphics[width=0.7\linewidth]{images/pr1-1} 
+{\centering \includegraphics[width=1\linewidth]{images/pr2-1} 
 
 }
 
-\caption{Densidades dos parâmetros do modelo de efeitos mistos com variável de segundo nível.}\label{fig:pr1}
-\end{figure}
-\begin{figure}[H]
-
-{\centering \includegraphics[width=0.7\linewidth]{images/pr2-1} 
-
-}
-
-\caption{Densidades dos parâmetros do modelo de Mundlak.}\label{fig:pr2}
+\caption{Densidades dos parâmetros do modelo de efeitos mistos com variável de segundo nível}\label{fig:pr2}
 \end{figure}
 
 \hypertarget{previsuxe3o-de-valores}{%
@@ -918,129 +891,112 @@ um lote-padrão nos diferentes bairros.
 A tabela abaixo mostra os valores previsto pelos modelos para um
 lote-padrão de 400 \(m^2\) nos diversos bairros:
 
-\begin{longtable}[]{@{}cccc@{}}
-\caption{Previsões para valores de lote-padrão nos diferentes
+\begin{longtable}[]{@{}ccc@{}}
+\caption{Previsões para valores de Lote-Padrão nos diferentes
 bairros.}\tabularnewline
 \toprule
 \begin{minipage}[b]{0.06\columnwidth}\centering
 Bairro\strut
-\end{minipage} & \begin{minipage}[b]{0.35\columnwidth}\centering
+\end{minipage} & \begin{minipage}[b]{0.36\columnwidth}\centering
 Modelo de efeitos fixos\strut
-\end{minipage} & \begin{minipage}[b]{0.34\columnwidth}\centering
-Modelo misto com variável de segundo nível\strut
-\end{minipage} & \begin{minipage}[b]{0.13\columnwidth}\centering
-Modelo Mundlak\strut
+\end{minipage} & \begin{minipage}[b]{0.50\columnwidth}\centering
+Modelo de efeitos mistos com variável de segundo nível\strut
 \end{minipage}\tabularnewline
 \midrule
 \endfirsthead
 \toprule
 \begin{minipage}[b]{0.06\columnwidth}\centering
 Bairro\strut
-\end{minipage} & \begin{minipage}[b]{0.35\columnwidth}\centering
+\end{minipage} & \begin{minipage}[b]{0.36\columnwidth}\centering
 Modelo de efeitos fixos\strut
-\end{minipage} & \begin{minipage}[b]{0.34\columnwidth}\centering
-Modelo misto com variável de segundo nível\strut
-\end{minipage} & \begin{minipage}[b]{0.13\columnwidth}\centering
-Modelo Mundlak\strut
+\end{minipage} & \begin{minipage}[b]{0.50\columnwidth}\centering
+Modelo de efeitos mistos com variável de segundo nível\strut
 \end{minipage}\tabularnewline
 \midrule
 \endhead
 \begin{minipage}[t]{0.06\columnwidth}\centering
 A\strut
-\end{minipage} & \begin{minipage}[t]{0.35\columnwidth}\centering
-1.185,02\strut
-\end{minipage} & \begin{minipage}[t]{0.34\columnwidth}\centering
-1.184,39\strut
-\end{minipage} & \begin{minipage}[t]{0.13\columnwidth}\centering
-1.186,85\strut
+\end{minipage} & \begin{minipage}[t]{0.36\columnwidth}\centering
+1.379,72\strut
+\end{minipage} & \begin{minipage}[t]{0.50\columnwidth}\centering
+1.387,58\strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.06\columnwidth}\centering
 B\strut
-\end{minipage} & \begin{minipage}[t]{0.35\columnwidth}\centering
-1.283,46\strut
-\end{minipage} & \begin{minipage}[t]{0.34\columnwidth}\centering
-1.283,94\strut
-\end{minipage} & \begin{minipage}[t]{0.13\columnwidth}\centering
-1.284,12\strut
+\end{minipage} & \begin{minipage}[t]{0.36\columnwidth}\centering
+1.530,98\strut
+\end{minipage} & \begin{minipage}[t]{0.50\columnwidth}\centering
+1.538,62\strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.06\columnwidth}\centering
 C\strut
-\end{minipage} & \begin{minipage}[t]{0.35\columnwidth}\centering
-1.409,95\strut
-\end{minipage} & \begin{minipage}[t]{0.34\columnwidth}\centering
-1.410,66\strut
-\end{minipage} & \begin{minipage}[t]{0.13\columnwidth}\centering
-1.408,79\strut
+\end{minipage} & \begin{minipage}[t]{0.36\columnwidth}\centering
+1.696,18\strut
+\end{minipage} & \begin{minipage}[t]{0.50\columnwidth}\centering
+1.695,01\strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.06\columnwidth}\centering
 D\strut
-\end{minipage} & \begin{minipage}[t]{0.35\columnwidth}\centering
-1.505,32\strut
-\end{minipage} & \begin{minipage}[t]{0.34\columnwidth}\centering
-1.508,33\strut
-\end{minipage} & \begin{minipage}[t]{0.13\columnwidth}\centering
-1.506,38\strut
+\end{minipage} & \begin{minipage}[t]{0.36\columnwidth}\centering
+1.891,57\strut
+\end{minipage} & \begin{minipage}[t]{0.50\columnwidth}\centering
+1.863,04\strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.06\columnwidth}\centering
 E\strut
-\end{minipage} & \begin{minipage}[t]{0.35\columnwidth}\centering
-1.661,76\strut
-\end{minipage} & \begin{minipage}[t]{0.34\columnwidth}\centering
-1.666,10\strut
-\end{minipage} & \begin{minipage}[t]{0.13\columnwidth}\centering
-1.664,58\strut
+\end{minipage} & \begin{minipage}[t]{0.36\columnwidth}\centering
+1.982,52\strut
+\end{minipage} & \begin{minipage}[t]{0.50\columnwidth}\centering
+1.990,88\strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.06\columnwidth}\centering
 F\strut
-\end{minipage} & \begin{minipage}[t]{0.35\columnwidth}\centering
-1.857,19\strut
-\end{minipage} & \begin{minipage}[t]{0.34\columnwidth}\centering
-1.862,03\strut
-\end{minipage} & \begin{minipage}[t]{0.13\columnwidth}\centering
-1.861,09\strut
+\end{minipage} & \begin{minipage}[t]{0.36\columnwidth}\centering
+2.133,79\strut
+\end{minipage} & \begin{minipage}[t]{0.50\columnwidth}\centering
+2.141,94\strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.06\columnwidth}\centering
 G\strut
-\end{minipage} & \begin{minipage}[t]{0.35\columnwidth}\centering
-2.089,09\strut
-\end{minipage} & \begin{minipage}[t]{0.34\columnwidth}\centering
-2.091,38\strut
-\end{minipage} & \begin{minipage}[t]{0.13\columnwidth}\centering
-2.086,18\strut
+\end{minipage} & \begin{minipage}[t]{0.36\columnwidth}\centering
+2.313,13\strut
+\end{minipage} & \begin{minipage}[t]{0.50\columnwidth}\centering
+2.303,78\strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.06\columnwidth}\centering
 H\strut
-\end{minipage} & \begin{minipage}[t]{0.35\columnwidth}\centering
-2.405,77\strut
-\end{minipage} & \begin{minipage}[t]{0.34\columnwidth}\centering
-2.383,37\strut
-\end{minipage} & \begin{minipage}[t]{0.13\columnwidth}\centering
-2.391,40\strut
+\end{minipage} & \begin{minipage}[t]{0.36\columnwidth}\centering
+2.457,33\strut
+\end{minipage} & \begin{minipage}[t]{0.50\columnwidth}\centering
+2.450,14\strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.06\columnwidth}\centering
 I\strut
-\end{minipage} & \begin{minipage}[t]{0.35\columnwidth}\centering
-2.770,98\strut
-\end{minipage} & \begin{minipage}[t]{0.34\columnwidth}\centering
-2.771,21\strut
-\end{minipage} & \begin{minipage}[t]{0.13\columnwidth}\centering
-2.774,04\strut
+\end{minipage} & \begin{minipage}[t]{0.36\columnwidth}\centering
+2.597,51\strut
+\end{minipage} & \begin{minipage}[t]{0.50\columnwidth}\centering
+2.598,88\strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.06\columnwidth}\centering
 J\strut
-\end{minipage} & \begin{minipage}[t]{0.35\columnwidth}\centering
-2.984,74\strut
-\end{minipage} & \begin{minipage}[t]{0.34\columnwidth}\centering
-2.983,12\strut
-\end{minipage} & \begin{minipage}[t]{0.13\columnwidth}\centering
-2.982,68\strut
+\end{minipage} & \begin{minipage}[t]{0.36\columnwidth}\centering
+2.741,39\strut
+\end{minipage} & \begin{minipage}[t]{0.50\columnwidth}\centering
+2.747,09\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.06\columnwidth}\centering
+K\strut
+\end{minipage} & \begin{minipage}[t]{0.36\columnwidth}\centering
+2.901,56\strut
+\end{minipage} & \begin{minipage}[t]{0.50\columnwidth}\centering
+2.901,56\strut
 \end{minipage}\tabularnewline
 \bottomrule
 \end{longtable}
 
 \hypertarget{intervalos-de-prediuxe7uxe3o}{%
 \subsubsection{Intervalos de
-predição}\label{intervalos-de-prediuxe7uxe3o}}
+Predição}\label{intervalos-de-prediuxe7uxe3o}}
 
 No caso dos modelos mistos, os intervalos de predição são calculados
 separadamente para cada efeito. Na tabela \ref{tab:pred1} podem ser
@@ -1052,15 +1008,16 @@ predição para o efeito fixo.
 
 \begin{table}[H]
 
-\caption{\label{tab:pred1}Previsão de valores com o modelos de efeitos mistos simples.}
+\caption{\label{tab:pred1}Intervalo de Predição com o modelo de efeitos mistos simples.}
 \centering
+\fontsize{10}{12}\selectfont
 \begin{tabular}[t]{lrrrr}
 \toprule
-Efeitos & Valor Central & Limite Superior & Limite Inferior & Observações\\
+Efeito & Valor Central & Limite Superior & Limite Inferior & Observações\\
 \midrule
-\rowcolor{gray!6}  combined & 2.107,83 & 2.399,25 & 1.774,01 & 1\\
-Bairro & 228,07 & 365,87 & 88,94 & 1\\
-\rowcolor{gray!6}  fixed & 1.875,53 & 2.182,62 & 1.557,22 & 1\\
+\rowcolor{gray!6}  combined & 2.317,3 & 2.560,2 & 2.065,9 & 1\\
+Bairro & 194,1 & 333,6 & 56,3 & 1\\
+\rowcolor{gray!6}  fixed & 2.121,5 & 2.364,9 & 1.882,1 & 1\\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -1070,49 +1027,33 @@ lote-padrão no bairro H.
 
 \begin{table}[H]
 
-\caption{\label{tab:pred2}Previsão de valores com o modelos de efeitos mistos com variável de segundo nível.}
+\caption{\label{tab:pred2}Intervalo de Predição com o modelo de efeitos mistos com variável de segundo nível}
 \centering
+\fontsize{10}{12}\selectfont
 \begin{tabular}[t]{lrrrr}
 \toprule
-Efeitos & Valor Central & Limite Superior & Limite Inferior & Observações\\
+Efeito & Valor Central & Limite Superior & Limite Inferior & Observações\\
 \midrule
-\rowcolor{gray!6}  combined & 2.383,37 & 2.571,42 & 2.189,59 & 1\\
-Bairro & -6,43 & 149,31 & -136,54 & 1\\
-\rowcolor{gray!6}  fixed & 2.380,55 & 2.571,13 & 2.195,37 & 1\\
+\rowcolor{gray!6}  combined & 2.449,7 & 2.600,0 & 2.300,7 & 1\\
+Bairro & -1,7 & 149,4 & -136,8 & 1\\
+\rowcolor{gray!6}  fixed & 2.447,1 & 2.587,7 & 2.301,4 & 1\\
 \bottomrule
 \end{tabular}
 \end{table}
 
-A tabela \ref{tab:pred3} mostra o intervalo de predição para o
-lote-padrão no bairro H, obtido com o modelo de Mundlak.
-
-\begin{table}[H]
-
-\caption{\label{tab:pred3}Previsão de valores com o modelo de Mundlak.}
-\centering
-\begin{tabular}[t]{lrrrr}
-\toprule
-Efeitos & Valor Central & Limite Superior & Limite Inferior & Observações\\
-\midrule
-\rowcolor{gray!6}  combined & 2.391,40 & 2.543,85 & 2.240,62 & 1\\
-Bairro & 2,13 & 136,18 & -148,36 & 1\\
-\rowcolor{gray!6}  fixed & 2.392,34 & 2.543,80 & 2.241,66 & 1\\
-\bottomrule
-\end{tabular}
-\end{table}
-
-Para efeitos de comparação, a tabela \ref{tab:pred4} mostra o intervalo
+Para efeitos de comparação, a tabela \ref{tab:pred3} mostra o intervalo
 de predição para o bairro H calculado com o modelo de efeitos fixos.
 
 \begin{table}[H]
 
-\caption{\label{tab:pred4}Intervalo de Predição com o modelo de efeitos fixos}
+\caption{\label{tab:pred3}Intervalo de Predição com o modelo de efeitos fixos}
 \centering
+\fontsize{10}{12}\selectfont
 \begin{tabular}[t]{lrrr}
 \toprule
-Efeitos & Valor Central & Limite Superior & Limite Inferior\\
+Efeito & Valor Central & Limite Superior & Limite Inferior\\
 \midrule
-\rowcolor{gray!6}  Fixo & 2.405,77 & 2.546,85 & 2.264,69\\
+\rowcolor{gray!6}  Fixo & 2.457,3 & 2.598,5 & 2.316,2\\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -1125,11 +1066,12 @@ modelo de efeitos fixos foram utilizados 10\% mais dados e que o modelo
 de efeitos mistos não utilizou qualquer dado amostral proveninente do
 bairro H.
 
-\hypertarget{conclusuxe3o}{%
-\section{Conclusão}\label{conclusuxe3o}}
+\hypertarget{conclusuxe3o-e-sugestuxe3o-para-trabalhos-futuros}{%
+\section{Conclusão e sugestão para trabalhos
+futuros}\label{conclusuxe3o-e-sugestuxe3o-para-trabalhos-futuros}}
 
 A aplicação da modelagem mista ou hierárquica na Engenharia de
-Avaliações pode ser feita das mais diversas maneiras, desde a aplicação
+Avaliaçãoes pode ser feita das mais diversas maneiras, desde a aplicação
 em avaliações de precisão, até a avaliação em massa para fins
 tributários, assim como para confecção de índices de preços de imóveis.
 
@@ -1174,15 +1116,14 @@ Outra possibilidade é a modelagem dos dados ao longo do tempo, o que
 possibilita a sua utilização para a confecção de índices de preços de
 imóveis.
 
-\hypertarget{sugestuxf5es-para-trabalhos-futuros}{%
-\section{Sugestões para trabalhos
-futuros}\label{sugestuxf5es-para-trabalhos-futuros}}
-
 \hypertarget{referuxeancias}{%
 \section*{Referências}\label{referuxeancias}}
 \addcontentsline{toc}{section}{Referências}
 
 \hypertarget{refs}{}
+\leavevmode\hypertarget{ref-Batesbook}{}%
+BATES, D. \textbf{Lme4: Mixed-effects modeling with R}. 2010.
+
 \leavevmode\hypertarget{ref-Bates}{}%
 BATES, D.; MÄCHLER, M.; BOLKER, B.; WALKER, S. Fitting linear
 mixed-effects models using lme4. \textbf{Journal of Statistical

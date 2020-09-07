@@ -77,8 +77,7 @@ y_{ij} = \sum_{j=1}^{j}\beta_{0j}D_j + \beta_1 x_{ij} + \epsilon_{ij}
 
 No entanto, uma outra maneira mais conveniente - para a comparação que
 se pretende de escrever a formulação de efeitos fixos, equivalente à
-primeira, pode ser vista na equação \ref{eq:fixef2} (BELL et al.,
-\protect\hyperlink{ref-bell2019}{2019}, p. 1058):
+primeira, pode ser vista na equação \ref{eq:fixef2} [@bell2019, 1058]:
 
 \begin{equation} \label{eq:fixef2}
 y_{ij} = \beta_1 (x_{ij} - \bar{x}_j) + (\upsilon_i + \epsilon_{ij}) 
@@ -175,74 +174,86 @@ hipótese considerada pelos modelos mistos de que não há correlação dos
 efeitos aleatórios (representados por $\upsilon_i$) e os regressores
 ($x_ij$), o que é permitido na modelagem de efeitos fixos [@bell2019, 1060].
 
-Este tipo de modelagem ainda pode ser facilmente estendida para
-incorporar outros níveis hierárquicos mais altos, assim como
-variabilidade não apenas para os interceptos, mas também para os
-coeficientes das variáveis explicativas [@bell2019, 1052].
+Este tipo de modelagem ainda pode ser facilmente estendida para incorporar
+outros níveis hierárquicos mais altos, assim como variabilidade não apenas para
+os interceptos, mas também para os coeficientes das variáveis explicativas
+[@bell2019, 1052].
 
 ### Formulação de Mundlak
 
-Uma maneira mais adequada de escrever a formulação de modelos mistos
-consiste na separação dos efeitos dentro dos agrupamentos dos efeitos
-entre os agrupamentos, o que é conhecido na literatura por formulação
-\emph{within-between}. Esta formulação é a mais genérica, capaz de
-modelar diversos efeitos e é particularmente interessante na análise de
-dados em painéis ou séries temporais, e será apresentada no próximo
-item. No caso de dados em seção transversal, no entanto, esta formulação
-pode ser ligeiramente modificada como mostrado na equação
-\ref{eq:mundlak}, o que é conhecido na literatura como formulação de
+Esta formulação consiste da introdução de um termo adicional à parte macro do 
+modelo, que leva em conta a variação entre os grupos (*between effect*), de 
+maneira que a equação \ref{eq:macro} torna-se:
+
+\begin{equation} \label{eq:macro2}
+\beta_{0j} = \beta_0 + \beta_2 z_{j} + \beta_3 \bar{x}_j + \upsilon_{j} 
+\end{equation}
+
+A combinação das equações \ref{eq:micro} e \ref{eq:macro2} toma a forma da 
+equação \ref{eq:mundlak}, que é conhecida na literatura como formulação de
 Mundlak [@bell2015, 1055]:
 
 \begin{equation} \label{eq:mundlak}
-y_{ij} = \beta_0 + \beta_{1W} x_{ij} + \beta_{2C}\bar{x}_i+ \beta_3 z_i + (\upsilon_i + \epsilon_{ij}) 
+y_{ij} = \beta_0 + \beta_{1} x_{ij} + \beta_{3}\bar{x}_j+ \beta_2 z_j + (\upsilon_j + \epsilon_{ij}) 
 \end{equation}
 
 Segundo Bell *et al.* [@bell2019, 1055], na formulação de Mundlak o efeito
-contextual, representado na equação \ref{eq:mundlak} pelo termo $\beta_{2C}$,
-é de interesse. O que este termo modela é como uma mudança de contexto (no caso
-da Engenharia de Avaliações, uma mudança de bairros, por exemplo), afeta o valor
-de um indivíduo (neste caso, imóveis).
+contextual, representado na equação \ref{eq:mundlak} pelo termo $\beta_{3}$
+(algumas vezes escrito como $\beta_{C}$), é de interesse, pois mostra a 
+*diferença* entre os efeitos dentro (*within effect*) e entre (*between effect*) 
+os grupos. 
 
 Na prática, segundo Bell *et al.* [@bell2019, 1057], os modelos de Mundlak e os
 modelos de efeitos fixos estimarão exatamente os mesmos valores para os
-coeficientes de efeitos dentro dos agrupamentos (\emph{within effects}),
-representado na formulação acima pelo termo $\beta_{1W}$.
+coeficientes de efeitos dentro dos agrupamentos (*within effects*),
+representado na formulação acima pelo termo $\beta_1$ (algumas vezes escrito
+$\beta_{W}$). 
+
+Esta formulação, segundo Bell *et al.* [-@bell2015, 1056], é particularmente 
+interessante para a análise de dados em seção transversal, pois o coeficiente
+$\beta_C$ representa o efeito da mundança de grupo de um indivíduo, mantidas as
+suas características. Na Engenharia de  Avaliações, por exemplo, o valor de 
+$\beta_C$ pode representas o quanto um lote-padrão aumentaria (ou diminuiria) de
+valor se ele pertencesse a um outro bairro ou zona, o que é particularmente 
+interessante para a confecção de planta de valores genéricos.
 
 ### Formulação Within-Between
 
-A formulação \emph{within-between} (REWB) é a mais genérica, normalmente
-utilizada para o ajuste de modelos com dados em painéis, onde os
-indivíduos ($i$) são medidos em múltiplas ocasiões ($t$). Esta
-formulação é capaz de distinguir entre os efeitos dentro (\emph{within
-effects}) e entre (\emph{between effects}) cada agrupamento.
+Uma maneira às vezes mais adequada de escrever a formulação de modelos mistos
+consiste na separação total dos efeitos dentro dos agrupamentos dos efeitos
+entre os agrupamentos, o que é conhecido na literatura por formulação
+*within-between*. Esta formulação é a mais genérica, capaz de modelar diversos
+efeitos separadamente e é particularmente interessante na análise de dados em
+painéis ou séries temporais, dada a sua melhor interpretabilidade para estes
+tipos de dados [@bell2015, 143].
 
-Na equação \ref{eq:rewb} [@bell2019, 1055] então, os dados estão usualmente
-agrupados em painéis, não em unidades geográficas, como na formulação de
-Mundlak apresentada no item anterior.
+Partindo da formulação de Mundlak, os efeitos *within* e *between* podem ter
+seus efeitos totalmente separados pela divisão do coeficiente $\beta_3$ da 
+equação \ref{eq:mundlak}, escrevendo-o explicitamente como uma diferença em 
+relação ao coeficiente $\beta_1$, conforme mostrado pela equação \ref{eq:rewb1}
 
-\begin{equation} \label{eq:rewb}
-y_{it} = \beta_0 + \beta_{1W} (x_{it} - \bar{x}_i) + \beta_{2B}\bar{x}_i+ \beta_3 z_i + (\upsilon_i + \epsilon_{it}) 
+\begin{equation} \label{eq:rewb1}
+y_{ij} = \beta_0 + \beta_1 x_{ij} + (\beta_{4} - \beta_1) \bar{x}_j+ \beta_2 z_j + (\upsilon_j + \epsilon_{it}) 
 \end{equation}
 
-Onde $\beta_{1W}$ representa o efeito médio entre os indivíduos dentro
-(\emph{within}) dos agrupamentos e $\beta_{2B}$ representa o efeito
-entre (\emph{between}) os agrupamentos. No caso de dados em paínéis,
-$\beta_{1W}$ representa o efeito num período e $\beta_{2B}$
-representa o efeito entre os períodos para a variável não-estacionária
-$x_{it}$.
+Rearranjando conveniente a equação \ref{eq:rewb1}, chega-se à formulação REWB, 
+como mostra a equação \ref{eq:rewb2}:
 
-É possível ainda a construção de um modelo ainda mais genérico que
-permite não apenas a modelagem de interceptos aleatórios mas também a
-modelagem de coeficientes aleatórios, como descrito na equação
-\ref{eq:rewb2}:
+\begin{equation} \label{eq:rewb1}
+y_{ij} = \beta_0 + \beta_1 (x_{ij} - \bar{x}_j) + \beta_4 \bar{x}_j+ \beta_2 z_j + (\upsilon_j + \epsilon_{it}) 
+\end{equation}
+
+É possível ainda a construção de um modelo ainda mais genérico que permite não
+apenas a modelagem de interceptos aleatórios mas também a modelagem de
+coeficientes aleatórios, como descrito na equação \ref{eq:rewb2}:
 
 \begin{equation} \label{eq:rewb2}
-y_{it} = \mu + \beta_{1W} (x_{it} - \bar{x}_i) + \beta_{2B}\bar{x}_i+ 
-\beta_3 z_i + \upsilon_{i0} + \upsilon_{i1} (x_{it} - \bar{x}_i) + \epsilon_{it0} 
+y_{ij} = \mu + \beta_{W} (x_{ij} - \bar{x}_j) + \beta_{B}\bar{x}_j+ 
+\beta_2 z_j + \upsilon_{j0} + \upsilon_{j1} (x_{ij} - \bar{x}_j) + \epsilon_{ij0} 
 \end{equation}
 
-Onde o termo $\upsilon_{i0}$ está relacionado à aleatoriedade do
-intercepto e o termo $\upsilon_{i1}$ está relacionado à aleatoriedade
+Onde o termo $\upsilon_{j0}$ está relacionado à aleatoriedade do
+intercepto e o termo $\upsilon_{j1}$ está relacionado à aleatoriedade
 do coeficiente da variável $x$.
 
 ## Considerações sobre a pertinência de cada modelagem
@@ -293,29 +304,27 @@ no \proglang{R}, versão 4.0.2 [@R].
 
 
 
-Foram criados 550 dados de lotes, divididos igualmente em 11 bairros, 
+Foram criados 500 dados de lotes, divididos igualmente em 10 bairros, 
 a partir de simulação com o auxílio do software **R**.
 
 Os dados foram criados conforme parâmetros da tabela 1:
 
-| Variável              | Tipo          | Distribuição | Parâmetros                      | Obs                       |
-|:----------------------|--------------:|:------------:|--------------------------------:|:-------------------------:|
-| Área ($A$)            | Quantitativa  | Normal       | $\mu = 400, \sigma = 50$        |  -                        |
-| Bairro                | Qualitativa   | -            | A a K                           |  -                        |
-| Áreas Verdes ($A_V$)  | Quantitativa  | Uniforme     | $\mu = 0,2 \quad a \quad 0,70$  |Um valor para cada bairro  |
-| $\beta_{0}$           | Coeficiente   | Discreta     | 2000                            |  -                        |
-| $\upsilon$            | Termo de erro | Normal       | $\mu = 0, \sigma = 150$         |  -                        |
-| $\beta_{0j}$          | Coeficiente   | Não definida | $\beta_0 + 3000A_V + \upsilon$  |  -                        |
-| $\epsilon$            | Termo de erro | Normal       | $\mu = 0, \sigma = 50$          |  -                        |
-| Valor Unitário ($VU$) | Quantitativa  | Não definida | $\beta_{0j} - 3,0 A + \epsilon$ |  -                        | 
+| Variável              | Tipo          | Distribuição | Parâmetros                          | Obs.                      |
+|:----------------------|--------------:|:------------:|------------------------------------:|:-------------------------:|
+| Área ($A$)            | Quantitativa  | Normal       | $\mu = 400 \ @ \ 500, \sigma = 50$  |  -                        |
+| Bairro                | Qualitativa   | -            | A a J                               |  -                        |
+| Áreas Verdes ($A_V$)  | Quantitativa  | Uniforme     | $\mu = 0,2 \quad a \quad 0,65$      |Um valor para cada bairro  |
+| $\beta_{0}$           | Coeficiente   | Discreta     | 2000                                |  -                        |
+| $\upsilon$            | Termo de erro | Normal       | $\mu = 0, \sigma = 150$             |  -                        |
+| $\beta_{0j}$          | Coeficiente   | Não definida | $\beta_0 + 3000A_V + \upsilon$      |  -                        |
+| $\epsilon$            | Termo de erro | Normal       | $\mu = 0, \sigma = 50$              |  -                        |
+| Valor Unitário ($VU$) | Quantitativa  | Não definida | $\beta_{0j} - 3,0 A + \epsilon$     |  -                        | 
 
 
 
 
 ## Análise exploratória dos dados
 
-Na figura \ref{fig:exploratoria} é possível ver os principais gráficos
-dos dados gerados.
 
 
 
@@ -432,26 +441,25 @@ fixos (coluna (1)).
 <tr><td style="text-align:left"></td><td><em>OLS</em></td><td colspan="3"><em>linear</em></td></tr>
 <tr><td style="text-align:left"></td><td><em></em></td><td colspan="3"><em>mixed-effects</em></td></tr>
 <tr><td style="text-align:left"></td><td>(1)</td><td>(2)</td><td>(3)</td><td>(4)</td></tr>
-<tr><td colspan="5" style="border-bottom: 1px solid black"></td></tr><tr><td style="text-align:left">Constant</td><td></td><td>2.116,84 (163,57)<sup>***</sup></td><td>788,85 (18,13)<sup>***</sup></td><td>1.858,21 (597,46)<sup>***</sup></td></tr>
-<tr><td style="text-align:left">Area_center</td><td>-2,99 (0,09)<sup>***</sup></td><td>-3,00 (0,10)<sup>***</sup></td><td>-3,00 (0,10)<sup>***</sup></td><td></td></tr>
-<tr><td style="text-align:left">BairroA</td><td>1.379,72 (15,41)<sup>***</sup></td><td></td><td></td><td></td></tr>
-<tr><td style="text-align:left">BairroB</td><td>1.530,98 (15,41)<sup>***</sup></td><td></td><td></td><td></td></tr>
-<tr><td style="text-align:left">BairroC</td><td>1.696,18 (15,42)<sup>***</sup></td><td></td><td></td><td></td></tr>
-<tr><td style="text-align:left">BairroD</td><td>1.891,57 (15,41)<sup>***</sup></td><td></td><td></td><td></td></tr>
-<tr><td style="text-align:left">BairroE</td><td>1.982,52 (15,40)<sup>***</sup></td><td></td><td></td><td></td></tr>
-<tr><td style="text-align:left">BairroF</td><td>2.133,79 (15,41)<sup>***</sup></td><td></td><td></td><td></td></tr>
-<tr><td style="text-align:left">BairroG</td><td>2.313,13 (15,41)<sup>***</sup></td><td></td><td></td><td></td></tr>
-<tr><td style="text-align:left">BairroH</td><td>2.457,33 (15,40)<sup>***</sup></td><td></td><td></td><td></td></tr>
-<tr><td style="text-align:left">BairroI</td><td>2.597,51 (15,41)<sup>***</sup></td><td></td><td></td><td></td></tr>
-<tr><td style="text-align:left">BairroJ</td><td>2.741,39 (15,40)<sup>***</sup></td><td></td><td></td><td></td></tr>
-<tr><td style="text-align:left">BairroK</td><td>2.901,56 (15,40)<sup>***</sup></td><td></td><td></td><td></td></tr>
-<tr><td style="text-align:left">Area_dm</td><td></td><td></td><td></td><td>-3,00 (0,10)<sup>***</sup></td></tr>
-<tr><td style="text-align:left">Area_gm</td><td></td><td></td><td></td><td>-2,68 (1,47)<sup>***</sup></td></tr>
-<tr><td style="text-align:left">AreaVerde</td><td></td><td></td><td>3.018,16 (38,65)<sup>***</sup></td><td>3.021,14 (43,42)<sup>***</sup></td></tr>
-<tr><td colspan="5" style="border-bottom: 1px solid black"></td></tr><tr><td style="text-align:left">Observations</td><td>550</td><td>500</td><td>500</td><td>500</td></tr>
-<tr><td style="text-align:left">Log Likelihood</td><td></td><td>-3.089,74</td><td>-3.055,32</td><td>-3.054,02</td></tr>
-<tr><td style="text-align:left">Akaike Inf. Crit.</td><td>6.734,21</td><td>6.187,47</td><td>6.120,65</td><td>6.120,04</td></tr>
-<tr><td style="text-align:left">Bayesian Inf. Crit.</td><td>6.790,23</td><td>6.204,33</td><td>6.141,72</td><td>6.145,33</td></tr>
+<tr><td colspan="5" style="border-bottom: 1px solid black"></td></tr><tr><td style="text-align:left">Intercepto</td><td></td><td>2.183,89 (314,91)<sup>***</sup></td><td>-210,32 (246,63)</td><td>3.168,63 (606,54)<sup>***</sup></td></tr>
+<tr><td style="text-align:left">(Area - 400)</td><td>-2,92 (0,10)<sup>***</sup></td><td>-2,94 (0,10)<sup>***</sup></td><td>-2,95 (0,10)<sup>***</sup></td><td></td></tr>
+<tr><td style="text-align:left">Bairro A</td><td>1.085,02 (15,39)<sup>***</sup></td><td></td><td></td><td></td></tr>
+<tr><td style="text-align:left">Bairro B</td><td>1.283,46 (15,67)<sup>***</sup></td><td></td><td></td><td></td></tr>
+<tr><td style="text-align:left">Bairro C</td><td>1.509,95 (15,92)<sup>***</sup></td><td></td><td></td><td></td></tr>
+<tr><td style="text-align:left">Bairro D</td><td>1.705,32 (17,16)<sup>***</sup></td><td></td><td></td><td></td></tr>
+<tr><td style="text-align:left">Bairro E</td><td>1.961,76 (18,08)<sup>***</sup></td><td></td><td></td><td></td></tr>
+<tr><td style="text-align:left">Bairro F</td><td>2.257,19 (18,40)<sup>***</sup></td><td></td><td></td><td></td></tr>
+<tr><td style="text-align:left">Bairro G</td><td>2.589,09 (17,23)<sup>***</sup></td><td></td><td></td><td></td></tr>
+<tr><td style="text-align:left">Bairro H</td><td>3.005,77 (16,11)<sup>***</sup></td><td></td><td></td><td></td></tr>
+<tr><td style="text-align:left">Bairro I</td><td>3.470,98 (15,49)<sup>***</sup></td><td></td><td></td><td></td></tr>
+<tr><td style="text-align:left">Bairro J</td><td>3.784,74 (15,38)<sup>***</sup></td><td></td><td></td><td></td></tr>
+<tr><td style="text-align:left">Area</td><td></td><td></td><td></td><td>-2,94 (0,10)<sup>***</sup></td></tr>
+<tr><td style="text-align:left">Area (contexto)</td><td></td><td></td><td></td><td>-4,92 (1,32)<sup>***</sup></td></tr>
+<tr><td style="text-align:left">Area Verde</td><td></td><td></td><td>5.830,25 (564,82)<sup>***</sup></td><td>5.872,85 (334,70)<sup>***</sup></td></tr>
+<tr><td colspan="5" style="border-bottom: 1px solid black"></td></tr><tr><td style="text-align:left">Observations</td><td>500</td><td>450</td><td>450</td><td>450</td></tr>
+<tr><td style="text-align:left">Log Likelihood</td><td></td><td>-2.784,80</td><td>-2.766,44</td><td>-2.761,08</td></tr>
+<tr><td style="text-align:left">Akaike Inf. Crit.</td><td>6.120,87</td><td>5.577,60</td><td>5.542,88</td><td>5.534,15</td></tr>
+<tr><td style="text-align:left">Bayesian Inf. Crit.</td><td>6.171,44</td><td>5.594,04</td><td>5.563,43</td><td>5.558,81</td></tr>
 <tr><td colspan="5" style="border-bottom: 1px solid black"></td></tr><tr><td style="text-align:left"><em>Note:</em></td><td colspan="4" style="text-align:right"><sup>*</sup>p<0,3; <sup>**</sup>p<0,2; <sup>***</sup>p<0,1</td></tr>
 </table>
 
@@ -488,21 +496,19 @@ bairro.
    <th style="text-align:right;"> G </th>
    <th style="text-align:right;"> I </th>
    <th style="text-align:right;"> J </th>
-   <th style="text-align:right;"> K </th>
   </tr>
  </thead>
 <tbody>
   <tr>
-   <td style="text-align:right;"> 1.380,4 </td>
-   <td style="text-align:right;"> 1.531,5 </td>
-   <td style="text-align:right;"> 1.696,5 </td>
-   <td style="text-align:right;"> 1.891,8 </td>
-   <td style="text-align:right;"> 1.982,6 </td>
-   <td style="text-align:right;"> 2.133,8 </td>
-   <td style="text-align:right;"> 2.313 </td>
-   <td style="text-align:right;"> 2.597,1 </td>
-   <td style="text-align:right;"> 2.740,8 </td>
-   <td style="text-align:right;"> 2.900,8 </td>
+   <td style="text-align:right;"> 1.085,4 </td>
+   <td style="text-align:right;"> 1.284,2 </td>
+   <td style="text-align:right;"> 1.510,8 </td>
+   <td style="text-align:right;"> 1.706,7 </td>
+   <td style="text-align:right;"> 1.963,4 </td>
+   <td style="text-align:right;"> 2.258,9 </td>
+   <td style="text-align:right;"> 2.590,3 </td>
+   <td style="text-align:right;"> 3.470,9 </td>
+   <td style="text-align:right;"> 3.784,3 </td>
   </tr>
 </tbody>
 </table>
@@ -524,13 +530,13 @@ variância ao nível dos imóveis, o que pode ser visto na tabela
 <tbody>
   <tr>
    <td style="text-align:left;"> Bairro </td>
-   <td style="text-align:right;"> 267.310,17 </td>
-   <td style="text-align:right;"> 517,02 </td>
+   <td style="text-align:right;"> 892.024,36 </td>
+   <td style="text-align:right;"> 944,47 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> Residual </td>
-   <td style="text-align:right;"> 12.129,93 </td>
-   <td style="text-align:right;"> 110,14 </td>
+   <td style="text-align:right;"> 12.123,29 </td>
+   <td style="text-align:right;"> 110,11 </td>
   </tr>
 </tbody>
 </table>
@@ -600,10 +606,10 @@ constantes da última coluna.
   <tr>
    <td style="text-align:left;"> fit_lmer </td>
    <td style="text-align:right;"> 4 </td>
-   <td style="text-align:right;"> 6.196,66 </td>
-   <td style="text-align:right;"> 6.213,51 </td>
-   <td style="text-align:right;"> -3.094,33 </td>
-   <td style="text-align:right;"> 6.188,66 </td>
+   <td style="text-align:right;"> 5.588,18 </td>
+   <td style="text-align:right;"> 5.604,61 </td>
+   <td style="text-align:right;"> -2.790,09 </td>
+   <td style="text-align:right;"> 5.580,18 </td>
    <td style="text-align:right;"> NA </td>
    <td style="text-align:right;"> NA </td>
    <td style="text-align:right;"> NA </td>
@@ -611,24 +617,24 @@ constantes da última coluna.
   <tr>
    <td style="text-align:left;"> fit_lmer2 </td>
    <td style="text-align:right;"> 5 </td>
-   <td style="text-align:right;"> 6.132,27 </td>
-   <td style="text-align:right;"> 6.153,34 </td>
-   <td style="text-align:right;"> -3.061,14 </td>
-   <td style="text-align:right;"> 6.122,27 </td>
-   <td style="text-align:right;"> 66,39 </td>
+   <td style="text-align:right;"> 5.565,11 </td>
+   <td style="text-align:right;"> 5.585,65 </td>
+   <td style="text-align:right;"> -2.777,55 </td>
+   <td style="text-align:right;"> 5.555,11 </td>
+   <td style="text-align:right;"> 25,07 </td>
    <td style="text-align:right;"> 1 </td>
-   <td style="text-align:right;"> 0,0 </td>
+   <td style="text-align:right;"> 0 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> mundlak </td>
    <td style="text-align:right;"> 6 </td>
-   <td style="text-align:right;"> 6.134,20 </td>
-   <td style="text-align:right;"> 6.159,49 </td>
-   <td style="text-align:right;"> -3.061,10 </td>
-   <td style="text-align:right;"> 6.122,20 </td>
-   <td style="text-align:right;"> 0,07 </td>
+   <td style="text-align:right;"> 5.556,28 </td>
+   <td style="text-align:right;"> 5.580,94 </td>
+   <td style="text-align:right;"> -2.772,14 </td>
+   <td style="text-align:right;"> 5.544,28 </td>
+   <td style="text-align:right;"> 10,82 </td>
    <td style="text-align:right;"> 1 </td>
-   <td style="text-align:right;"> 0,8 </td>
+   <td style="text-align:right;"> 0 </td>
   </tr>
 </tbody>
 </table>
@@ -656,7 +662,10 @@ segundo nível reduziu a variação não-explicada pelo modelo.
 <img src="images/pr1-1.png" alt="Densidades dos parâmetros do modelo de efeitos mistos com variável de segundo nível." width="70%" />
 <p class="caption">Densidades dos parâmetros do modelo de efeitos mistos com variável de segundo nível.</p>
 </div>
-
+<div class="figure" style="text-align: center">
+<img src="images/pr2-1.png" alt="Densidades dos parâmetros do modelo de Mundlak." width="70%" />
+<p class="caption">Densidades dos parâmetros do modelo de Mundlak.</p>
+</div>
 
 ## Previsão de Valores
 
@@ -716,19 +725,18 @@ lote-padrão de 400 $m^2$ nos diversos bairros:
 
 
 
-| Bairro | Modelo de efeitos fixos                        | Modelos de efeitos mistos com variável de segundo nível |
-|:------:|:----------------------------------------------:|:-------------------------------------------------------:|
-| A      | 1.379,72 | 1.387,58    |              
-| B      | 1.530,98 | 1.538,62    |
-| C      | 1.696,18 | 1.695,01    |
-| D      | 1.891,57 | 1.863,04    |
-| E      | 1.982,52 | 1.990,88    |
-| F      | 2.133,79 | 2.141,94    |
-| G      | 2.313,13 | 2.303,78    |
-| H      | 2.457,33 | 2.448,11    |
-| I      | 2.597,51 | 2.598,88    |
-| J      | 2.741,39 | 2.747,09    |
-| K      | 2.901,56 | 2.901,56    |
+| Bairro | Modelo de efeitos fixos                        | Modelo misto com variável de segundo nível  |  Modelo Mundlak  |
+|:------:|:----------------------------------------------:|:---------------------------------------------:|:----------------:|
+| A      | 1.085,02                                     | 1.084,69                                   | 1.086,20      |          
+| B      | 1.283,46                                     | 1.283,96                                   | 1.284,09      |
+| C      | 1.509,95                                     | 1.510,50                                   | 1.509,44      |
+| D      | 1.705,32                                     | 1.707,87                                   | 1.706,41      |
+| E      | 1.961,76                                     | 1.965,50                                   | 1.964,08      |
+| F      | 2.257,19                                     | 2.261,41                                   | 2.260,22      |
+| G      | 2.589,09                                     | 2.590,86                                   | 2.587,84      |
+| H      | 3.005,77                                     | 2.961,38                                   | 2.974,84      |
+| I      | 3.470,98                                     | 3.471,42                                   | 3.472,96      |
+| J      | 3.784,74                                     | 3.783,38                                   | 3.783,48      |
 Table: Previsões para valores de lote-padrão nos diferentes bairros.
 
 ### Intervalos de predição
@@ -757,23 +765,23 @@ predição para o efeito fixo.
 <tbody>
   <tr>
    <td style="text-align:left;"> combined </td>
-   <td style="text-align:right;"> 2.325,77 </td>
-   <td style="text-align:right;"> 2.567,26 </td>
-   <td style="text-align:right;"> 2.055,43 </td>
+   <td style="text-align:right;"> 2.615,65 </td>
+   <td style="text-align:right;"> 3.012,28 </td>
+   <td style="text-align:right;"> 2.166,06 </td>
    <td style="text-align:right;"> 1 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> Bairro </td>
-   <td style="text-align:right;"> 195,59 </td>
-   <td style="text-align:right;"> 333,44 </td>
-   <td style="text-align:right;"> 56,40 </td>
+   <td style="text-align:right;"> 405,85 </td>
+   <td style="text-align:right;"> 543,65 </td>
+   <td style="text-align:right;"> 266,73 </td>
    <td style="text-align:right;"> 1 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> fixed </td>
-   <td style="text-align:right;"> 2.124,69 </td>
-   <td style="text-align:right;"> 2.371,18 </td>
-   <td style="text-align:right;"> 1.871,54 </td>
+   <td style="text-align:right;"> 2.202,53 </td>
+   <td style="text-align:right;"> 2.623,73 </td>
+   <td style="text-align:right;"> 1.756,48 </td>
    <td style="text-align:right;"> 1 </td>
   </tr>
 </tbody>
@@ -798,29 +806,70 @@ lote-padrão no bairro H.
 <tbody>
   <tr>
    <td style="text-align:left;"> combined </td>
-   <td style="text-align:right;"> 2.448,11 </td>
-   <td style="text-align:right;"> 2.600,05 </td>
-   <td style="text-align:right;"> 2.300,71 </td>
+   <td style="text-align:right;"> 2.961,38 </td>
+   <td style="text-align:right;"> 3.168,50 </td>
+   <td style="text-align:right;"> 2.750,55 </td>
    <td style="text-align:right;"> 1 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> Bairro </td>
-   <td style="text-align:right;"> -6,42 </td>
-   <td style="text-align:right;"> 149,44 </td>
-   <td style="text-align:right;"> -136,78 </td>
+   <td style="text-align:right;"> -6,43 </td>
+   <td style="text-align:right;"> 149,31 </td>
+   <td style="text-align:right;"> -136,54 </td>
    <td style="text-align:right;"> 1 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> fixed </td>
-   <td style="text-align:right;"> 2.451,57 </td>
-   <td style="text-align:right;"> 2.587,75 </td>
-   <td style="text-align:right;"> 2.301,35 </td>
+   <td style="text-align:right;"> 2.960,02 </td>
+   <td style="text-align:right;"> 3.162,10 </td>
+   <td style="text-align:right;"> 2.756,35 </td>
    <td style="text-align:right;"> 1 </td>
   </tr>
 </tbody>
 </table>
 
-Para efeitos de comparação, a tabela \ref{tab:pred3} mostra o intervalo
+A tabela \ref{tab:pred3} mostra o intervalo de predição para o lote-padrão no
+bairro H, obtido com o modelo de Mundlak.
+
+
+
+<table class="table" style="margin-left: auto; margin-right: auto;">
+<caption>Previsão de valores com o modelo de Mundlak.</caption>
+ <thead>
+  <tr>
+   <th style="text-align:left;"> Efeitos </th>
+   <th style="text-align:right;"> Valor Central </th>
+   <th style="text-align:right;"> Limite Superior </th>
+   <th style="text-align:right;"> Limite Inferior </th>
+   <th style="text-align:right;"> Observações </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;"> combined </td>
+   <td style="text-align:right;"> 2.974,84 </td>
+   <td style="text-align:right;"> 3.135,80 </td>
+   <td style="text-align:right;"> 2.804,90 </td>
+   <td style="text-align:right;"> 1 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Bairro </td>
+   <td style="text-align:right;"> 2,13 </td>
+   <td style="text-align:right;"> 136,18 </td>
+   <td style="text-align:right;"> -148,36 </td>
+   <td style="text-align:right;"> 1 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> fixed </td>
+   <td style="text-align:right;"> 2.973,58 </td>
+   <td style="text-align:right;"> 3.132,87 </td>
+   <td style="text-align:right;"> 2.813,36 </td>
+   <td style="text-align:right;"> 1 </td>
+  </tr>
+</tbody>
+</table>
+
+Para efeitos de comparação, a tabela \ref{tab:pred4} mostra o intervalo
 de predição para o bairro H calculado com o modelo de efeitos fixos.
 
 
@@ -838,9 +887,9 @@ de predição para o bairro H calculado com o modelo de efeitos fixos.
 <tbody>
   <tr>
    <td style="text-align:left;"> Fixo </td>
-   <td style="text-align:right;"> 2.457,33 </td>
-   <td style="text-align:right;"> 2.598,46 </td>
-   <td style="text-align:right;"> 2.316,2 </td>
+   <td style="text-align:right;"> 3.005,77 </td>
+   <td style="text-align:right;"> 3.146,85 </td>
+   <td style="text-align:right;"> 2.864,69 </td>
   </tr>
 </tbody>
 </table>
@@ -855,51 +904,47 @@ bairro H.
 
 # Conclusão
 
-A aplicação da modelagem mista ou hierárquica na Engenharia de
-Avaliaçãoes pode ser feita das mais diversas maneiras, desde a aplicação
-em avaliações de precisão, até a avaliação em massa para fins
-tributários, assim como para confecção de índices de preços de imóveis.
+A aplicação da modelagem mista ou hierárquica na Engenharia de Avaliações pode
+ser feita das mais diversas maneiras, desde a aplicação em avaliações de
+precisão, até a avaliação em massa para fins tributários, assim como para
+confecção de índices de preços de imóveis.
 
-Neste trabalho foi mostrado como a Engenharia de Avaliações pode se
-valer da modelagem hierárquica ou mista para a confecção de PVG's, com a
-utilização de modelos com interceptos aleatórios, especialmente para
-estimação de valores para lotes-padrão em agrupamentos não presentes na
-amostra, através da utilização de variáveis de segundo nível que
-\emph{expliquem} a variabilidade entre os bairros ou outros
-agrupamentos. Tais modelos são mais complexos e ao mesmo tempo
-elegantes, dividindo a variabilidade em diversos níveis, deixando claro
-ao analista de onde advém a variabilidade dos preços.
+Neste trabalho foi mostrado como a Engenharia de Avaliações pode se valer da
+modelagem hierárquica ou mista para a confecção de PVG's, com a utilização de
+modelos com interceptos aleatórios, especialmente para estimação de valores para
+lotes-padrão em agrupamentos não presentes na amostra, através da utilização de
+variáveis de segundo nível que \emph{expliquem} a variabilidade entre os bairros
+ou outros agrupamentos. Tais modelos são mais complexos e ao mesmo tempo
+elegantes, dividindo a variabilidade em diversos níveis, deixando claro ao
+analista de onde advém a variabilidade dos preços.
 
-Embora a modelagem hierárquica seja considerada mais elegante do que a
-modelagem de efeitos fixos, deve-se ter em conta que a elaboração de
-modelos mistos sem variáveis de segundo nível, como é comum encontrar na
-literatura, não é tão interessante e quase nada agrega a uma melhor
-explicação do fenômeno estudado. Deve até haver uma melhora na estimação
-com os modelos mistos caso os dados de alguns agrupamentos estejam em
-número reduzido, mas o ideal é utilizar as formulações mais complexas da
-modelagem hierárquica de maneira a explorar ao máximo este tipo de
-modelagem.
+Embora a modelagem hierárquica seja considerada mais elegante do que a modelagem
+de efeitos fixos, deve-se ter em conta que a elaboração de modelos mistos sem
+variáveis de segundo nível, como é comum encontrar na literatura, não é tão
+interessante e quase nada agrega a uma melhor explicação do fenômeno estudado.
+Deve até haver uma melhora na estimação com os modelos mistos caso os dados de
+alguns agrupamentos estejam em número reduzido, mas o ideal é utilizar as
+formulações mais complexas da modelagem hierárquica de maneira a explorar ao
+máximo este tipo de modelagem.
 
-Na análise de dados em seção transversal, como na elaboração de
-avaliações de precisão ou na elaboração de PVG's, deve ser utilizada,
-preferencialmente, a formulação de Mundlak, enquanto para dados em
-painéis, como na confecção de índices de preços de imóveis, deve ser
-preferencialmente utilizada a formulação REWB.
+Na análise de dados em seção transversal, como na elaboração de avaliações de
+precisão ou na elaboração de PVG's, deve ser utilizada, preferencialmente, a
+formulação de Mundlak, enquanto para dados em painéis, como na confecção de
+índices de preços de imóveis, deve ser preferencialmente utilizada a formulação
+REWB.
 
-Na modelagem hierárquica ainda é possível incorporar outras hipóteses
-úteis, além dos interceptos aleatórios, como também coeficientes
-aleatórios, o que deve ser tema de outro trabalho.
+Na modelagem hierárquica ainda é possível incorporar outras hipóteses úteis,
+além dos interceptos aleatórios, como também coeficientes aleatórios, o que deve
+ser tema de outro trabalho.
 
-Outra possibilidade é a modelagem em mais níveis hierárquicos. Não
-apenas os imóveis podem ser agrupados em bairros, mas também os bairros
-podem, por sua vez, ser agrupados em macrozonas urbanas, assim como
-estas podem ser agrupadas em cidades, as cidades em regiões e assim por
-diante. A execução de modelos tão complexos com efeitos fixos é
-praticamente inviável.
+Outra possibilidade é a modelagem em mais níveis hierárquicos. Não apenas os
+imóveis podem ser agrupados em bairros, mas também os bairros podem, por sua
+vez, ser agrupados em macrozonas urbanas, assim como estas podem ser agrupadas
+em cidades, as cidades em regiões e assim por diante. A execução de modelos tão
+complexos com efeitos fixos é praticamente inviável.
 
-Outra possibilidade é a modelagem dos dados ao longo do tempo, o que
-possibilita a sua utilização para a confecção de índices de preços de
-imóveis.
+Outra possibilidade é a modelagem dos dados ao longo do tempo, o que possibilita
+a sua utilização para a confecção de índices de preços de imóveis.
 
 # Sugestões para trabalhos futuros
 

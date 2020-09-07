@@ -7,10 +7,6 @@ author:
   - Norberto Hoccheim^[UFSC, hochheim@gmail.com]
 date: "`r format(Sys.Date(), '%d/%m/%Y')`"
 output:
-  html_document:
-    fig_caption: yes
-    keep_md: yes
-  word_document: default
   pdf_document:
     includes:
       in_header: preamble.tex
@@ -18,6 +14,10 @@ output:
     latex_engine: xelatex
     number_sections: yes
     toc: no
+  word_document: default
+  html_document:
+    fig_caption: yes
+    keep_md: yes
 classoption: a4paper, 11pt
 documentclass: article
 geometry: left=2.5cm,right=2.5cm,top=3cm,bottom=2.5cm
@@ -95,8 +95,7 @@ y_{ij} = \sum_{j=1}^{j}\beta_{0j}D_j + \beta_1 x_{ij} + \epsilon_{ij}
 
 No entanto, uma outra maneira mais conveniente - para a comparação que
 se pretende de escrever a formulação de efeitos fixos, equivalente à
-primeira, pode ser vista na equação \ref{eq:fixef2} (BELL et al.,
-\protect\hyperlink{ref-bell2019}{2019}, p. 1058):
+primeira, pode ser vista na equação \ref{eq:fixef2} [@bell2019, 1058]:
 
 \begin{equation} \label{eq:fixef2}
 y_{ij} = \beta_1 (x_{ij} - \bar{x}_j) + (\upsilon_i + \epsilon_{ij}) 
@@ -193,74 +192,86 @@ hipótese considerada pelos modelos mistos de que não há correlação dos
 efeitos aleatórios (representados por $\upsilon_i$) e os regressores
 ($x_ij$), o que é permitido na modelagem de efeitos fixos [@bell2019, 1060].
 
-Este tipo de modelagem ainda pode ser facilmente estendida para
-incorporar outros níveis hierárquicos mais altos, assim como
-variabilidade não apenas para os interceptos, mas também para os
-coeficientes das variáveis explicativas [@bell2019, 1052].
+Este tipo de modelagem ainda pode ser facilmente estendida para incorporar
+outros níveis hierárquicos mais altos, assim como variabilidade não apenas para
+os interceptos, mas também para os coeficientes das variáveis explicativas
+[@bell2019, 1052].
 
 ### Formulação de Mundlak
 
-Uma maneira mais adequada de escrever a formulação de modelos mistos
-consiste na separação dos efeitos dentro dos agrupamentos dos efeitos
-entre os agrupamentos, o que é conhecido na literatura por formulação
-\emph{within-between}. Esta formulação é a mais genérica, capaz de
-modelar diversos efeitos e é particularmente interessante na análise de
-dados em painéis ou séries temporais, e será apresentada no próximo
-item. No caso de dados em seção transversal, no entanto, esta formulação
-pode ser ligeiramente modificada como mostrado na equação
-\ref{eq:mundlak}, o que é conhecido na literatura como formulação de
+Esta formulação consiste da introdução de um termo adicional à parte macro do 
+modelo, que leva em conta a variação entre os grupos (*between effect*), de 
+maneira que a equação \ref{eq:macro} torna-se:
+
+\begin{equation} \label{eq:macro2}
+\beta_{0j} = \beta_0 + \beta_2 z_{j} + \beta_3 \bar{x}_j + \upsilon_{j} 
+\end{equation}
+
+A combinação das equações \ref{eq:micro} e \ref{eq:macro2} toma a forma da 
+equação \ref{eq:mundlak}, que é conhecida na literatura como formulação de
 Mundlak [@bell2015, 1055]:
 
 \begin{equation} \label{eq:mundlak}
-y_{ij} = \beta_0 + \beta_{1W} x_{ij} + \beta_{2C}\bar{x}_i+ \beta_3 z_i + (\upsilon_i + \epsilon_{ij}) 
+y_{ij} = \beta_0 + \beta_{1} x_{ij} + \beta_{3}\bar{x}_j+ \beta_2 z_j + (\upsilon_j + \epsilon_{ij}) 
 \end{equation}
 
 Segundo Bell *et al.* [@bell2019, 1055], na formulação de Mundlak o efeito
-contextual, representado na equação \ref{eq:mundlak} pelo termo $\beta_{2C}$,
-é de interesse. O que este termo modela é como uma mudança de contexto (no caso
-da Engenharia de Avaliações, uma mudança de bairros, por exemplo), afeta o valor
-de um indivíduo (neste caso, imóveis).
+contextual, representado na equação \ref{eq:mundlak} pelo termo $\beta_{3}$
+(algumas vezes escrito como $\beta_{C}$), é de interesse, pois mostra a 
+*diferença* entre os efeitos dentro (*within effect*) e entre (*between effect*) 
+os grupos. 
 
 Na prática, segundo Bell *et al.* [@bell2019, 1057], os modelos de Mundlak e os
 modelos de efeitos fixos estimarão exatamente os mesmos valores para os
-coeficientes de efeitos dentro dos agrupamentos (\emph{within effects}),
-representado na formulação acima pelo termo $\beta_{1W}$.
+coeficientes de efeitos dentro dos agrupamentos (*within effects*),
+representado na formulação acima pelo termo $\beta_1$ (algumas vezes escrito
+$\beta_{W}$). 
+
+Esta formulação, segundo Bell *et al.* [-@bell2015, 1056], é particularmente 
+interessante para a análise de dados em seção transversal, pois o coeficiente
+$\beta_C$ representa o efeito da mundança de grupo de um indivíduo, mantidas as
+suas características. Na Engenharia de  Avaliações, por exemplo, o valor de 
+$\beta_C$ pode representas o quanto um lote-padrão aumentaria (ou diminuiria) de
+valor se ele pertencesse a um outro bairro ou zona, o que é particularmente 
+interessante para a confecção de planta de valores genéricos.
 
 ### Formulação Within-Between
 
-A formulação \emph{within-between} (REWB) é a mais genérica, normalmente
-utilizada para o ajuste de modelos com dados em painéis, onde os
-indivíduos ($i$) são medidos em múltiplas ocasiões ($t$). Esta
-formulação é capaz de distinguir entre os efeitos dentro (\emph{within
-effects}) e entre (\emph{between effects}) cada agrupamento.
+Uma maneira às vezes mais adequada de escrever a formulação de modelos mistos
+consiste na separação total dos efeitos dentro dos agrupamentos dos efeitos
+entre os agrupamentos, o que é conhecido na literatura por formulação
+*within-between*. Esta formulação é a mais genérica, capaz de modelar diversos
+efeitos separadamente e é particularmente interessante na análise de dados em
+painéis ou séries temporais, dada a sua melhor interpretabilidade para estes
+tipos de dados [@bell2015, 143].
 
-Na equação \ref{eq:rewb} [@bell2019, 1055] então, os dados estão usualmente
-agrupados em painéis, não em unidades geográficas, como na formulação de
-Mundlak apresentada no item anterior.
+Partindo da formulação de Mundlak, os efeitos *within* e *between* podem ter
+seus efeitos totalmente separados pela divisão do coeficiente $\beta_3$ da 
+equação \ref{eq:mundlak}, escrevendo-o explicitamente como uma diferença em 
+relação ao coeficiente $\beta_1$, conforme mostrado pela equação \ref{eq:rewb1}
 
-\begin{equation} \label{eq:rewb}
-y_{it} = \beta_0 + \beta_{1W} (x_{it} - \bar{x}_i) + \beta_{2B}\bar{x}_i+ \beta_3 z_i + (\upsilon_i + \epsilon_{it}) 
+\begin{equation} \label{eq:rewb1}
+y_{ij} = \beta_0 + \beta_1 x_{ij} + (\beta_{4} - \beta_1) \bar{x}_j+ \beta_2 z_j + (\upsilon_j + \epsilon_{it}) 
 \end{equation}
 
-Onde $\beta_{1W}$ representa o efeito médio entre os indivíduos dentro
-(\emph{within}) dos agrupamentos e $\beta_{2B}$ representa o efeito
-entre (\emph{between}) os agrupamentos. No caso de dados em paínéis,
-$\beta_{1W}$ representa o efeito num período e $\beta_{2B}$
-representa o efeito entre os períodos para a variável não-estacionária
-$x_{it}$.
+Rearranjando conveniente a equação \ref{eq:rewb1}, chega-se à formulação REWB, 
+como mostra a equação \ref{eq:rewb2}:
 
-É possível ainda a construção de um modelo ainda mais genérico que
-permite não apenas a modelagem de interceptos aleatórios mas também a
-modelagem de coeficientes aleatórios, como descrito na equação
-\ref{eq:rewb2}:
+\begin{equation} \label{eq:rewb1}
+y_{ij} = \beta_0 + \beta_1 (x_{ij} - \bar{x}_j) + \beta_4 \bar{x}_j+ \beta_2 z_j + (\upsilon_j + \epsilon_{it}) 
+\end{equation}
+
+É possível ainda a construção de um modelo ainda mais genérico que permite não
+apenas a modelagem de interceptos aleatórios mas também a modelagem de
+coeficientes aleatórios, como descrito na equação \ref{eq:rewb2}:
 
 \begin{equation} \label{eq:rewb2}
-y_{it} = \mu + \beta_{1W} (x_{it} - \bar{x}_i) + \beta_{2B}\bar{x}_i+ 
-\beta_3 z_i + \upsilon_{i0} + \upsilon_{i1} (x_{it} - \bar{x}_i) + \epsilon_{it0} 
+y_{ij} = \mu + \beta_{W} (x_{ij} - \bar{x}_j) + \beta_{B}\bar{x}_j+ 
+\beta_2 z_j + \upsilon_{j0} + \upsilon_{j1} (x_{ij} - \bar{x}_j) + \epsilon_{ij0} 
 \end{equation}
 
-Onde o termo $\upsilon_{i0}$ está relacionado à aleatoriedade do
-intercepto e o termo $\upsilon_{i1}$ está relacionado à aleatoriedade
+Onde o termo $\upsilon_{j0}$ está relacionado à aleatoriedade do
+intercepto e o termo $\upsilon_{j1}$ está relacionado à aleatoriedade
 do coeficiente da variável $x$.
 
 ## Considerações sobre a pertinência de cada modelagem
@@ -316,26 +327,18 @@ set.seed(seed)
 # Dados por bairro
 a <- 50
 # Número de bairros
-b <- 11
+b <- 10
 # Variáveis de nível 1
 #
 # Área
 #
-A <- rnorm(a*b, mean = 400, sd = 50)
+A <- rnorm(a*b, mean = 400, sd = 50) + c(rep(seq(0, 100, 25), each = a), rep(seq(100, 0, -25), each = a))
 #
 # Variáveis de nível 2
 #
 # Área livre
-Av <- rep(seq(.2, .7, .05), each = a)
+Av <- rep(seq(.2, .65, .05), each = a)
 #
-# Equação de segundo nível
-#
-beta_zero <- 2000
-beta_zeroj <- beta_zero + 3000*Av + rnorm(b*a, mean = 0, sd = 50)
-#
-# Equação mista
-#
-VU <- beta_zeroj - 3*A + rnorm(b*a, mean = 0, sd = 100)
 ```
 
 Foram criados `r a*b` dados de lotes, divididos igualmente em `r b` bairros, 
@@ -343,27 +346,37 @@ a partir de simulação com o auxílio do software **R**.
 
 Os dados foram criados conforme parâmetros da tabela 1:
 
-| Variável              | Tipo          | Distribuição | Parâmetros                      | Obs                       |
-|:----------------------|--------------:|:------------:|--------------------------------:|:-------------------------:|
-| Área ($A$)            | Quantitativa  | Normal       | $\mu = 400, \sigma = 50$        |  -                        |
-| Bairro                | Qualitativa   | -            | A a K                           |  -                        |
-| Áreas Verdes ($A_V$)  | Quantitativa  | Uniforme     | $\mu = 0,2 \quad a \quad 0,70$  |Um valor para cada bairro  |
-| $\beta_{0}$           | Coeficiente   | Discreta     | 2000                            |  -                        |
-| $\upsilon$            | Termo de erro | Normal       | $\mu = 0, \sigma = 150$         |  -                        |
-| $\beta_{0j}$          | Coeficiente   | Não definida | $\beta_0 + 3000A_V + \upsilon$  |  -                        |
-| $\epsilon$            | Termo de erro | Normal       | $\mu = 0, \sigma = 50$          |  -                        |
-| Valor Unitário ($VU$) | Quantitativa  | Não definida | $\beta_{0j} - 3,0 A + \epsilon$ |  -                        | 
+| Variável              | Tipo          | Distribuição | Parâmetros                          | Obs.                      |
+|:----------------------|--------------:|:------------:|------------------------------------:|:-------------------------:|
+| Área ($A$)            | Quantitativa  | Normal       | $\mu = 400 \ @ \ 500, \sigma = 50$  |  -                        |
+| Bairro                | Qualitativa   | -            | A a J                               |  -                        |
+| Áreas Verdes ($A_V$)  | Quantitativa  | Uniforme     | $\mu = 0,2 \quad a \quad 0,65$      |Um valor para cada bairro  |
+| $\beta_{0}$           | Coeficiente   | Discreta     | 2500                                |  -                        |
+| $\upsilon$            | Termo de erro | Normal       | $\mu = 0, \sigma = 50$              |  -                        |
+| $\beta_{0j}$          | Coeficiente   | Não definida | $\beta_0 + 4000A_{Vj} - 3.5 \overline{A_j} + \upsilon_j$ |  -   |
+| $\epsilon$            | Termo de erro | Normal       | $\mu = 0, \sigma = 100$              |  -                       |
+| Valor Unitário ($VU$) | Quantitativa  | Não definida | $\beta_{0j} - 3,0 A + \epsilon$     |  -                        | 
 
 
 ```{r}
 dados <- tibble(Area = A,
-                AreaVerde = Av,
-                Bairro = factor(rep(LETTERS[1:b], each=a)),
-                ValorUnitario = VU
+                AreaVerde = rep(seq(.2, .65, .05) + rnorm(10, 0, .025), each = a),
+                Bairro = factor(rep(LETTERS[1:b], each=a))
                 )
 dados <- as_tibble(dados)
 dados <- de_mean(dados, "Area", grp = "Bairro")
 dados$Area_center <- as.numeric(scale(dados$Area, center = 400, scale = FALSE))
+#
+# Equação de segundo nível
+#
+beta_zero <- 3000
+beta_zeroj <- beta_zero + 4000*Av - 3.5*dados$Area_gm  + rnorm(b*a, mean = 0, sd = 50)
+#
+# Equação mista
+#
+dados$ValorUnitario <- beta_zeroj - 3*dados$Area + rnorm(b*a, mean = 0, sd = 100)
+#
+#
 bairroH <- which(dados$Bairro == "H")
 newdata <- dados[bairroH, ]
 amostra <- dados[setdiff(1:550, bairroH), ]
@@ -371,8 +384,6 @@ amostra <- dados[setdiff(1:550, bairroH), ]
 
 ## Análise exploratória dos dados
 
-Na figura \ref{fig:exploratoria} é possível ver os principais gráficos
-dos dados gerados.
 
 ```{r}
 p1 <- ggplot(dados, aes(x = Bairro, y = ValorUnitario, color = Bairro)) +
@@ -470,7 +481,7 @@ ValorUnitario = \beta_0 + \beta_1 (Area - 400) + \upsilon_i + \epsilon
 Onde $\upsilon_i$ é uma variável aleatória que foi utilizada para
 modelar os diferentes bairros.
 
-```{r}
+```{r simpleMixedModel}
 fit_lmer <- lmer(ValorUnitario ~ Area_center + (1|Bairro), data = amostra)
 s <- summary(fit_lmer)
 re <- ranef(fit_lmer)
@@ -492,7 +503,7 @@ ValorUnitario = \beta_0 + \beta_1 (Area - 400) + \beta_2 A_V+ \upsilon_i + \epsi
 Onde $A_V$ é uma variável de nível 2 que representa a porcentagem de
 áreas verdes em cada bairro, em relação à área total.
 
-```{r}
+```{r 2ndlevelModel}
 fit_lmer2 <- lmer(ValorUnitario ~ Area_center + AreaVerde + (1|Bairro), data = amostra)
 s1 <- summary(fit_lmer2)
 re1 <- ranef(fit_lmer2)
@@ -510,12 +521,12 @@ modelo foi elaborado de acordo com a formulação exibida na equação
 ValorUnitario = \beta_0 + \beta_1 Area + \beta_{1C} \overline{Area}_i + \beta_2 A_V+ \upsilon_i + \epsilon
 \end{equation}
 
-```{r}
-mundlak <- lmer(ValorUnitario ~ Area_dm + Area_gm + AreaVerde + (1|Bairro), data = amostra)
-s2 <- summary(fit_lmer2)
-re2 <- ranef(fit_lmer2)
-fe2 <- fixef(fit_lmer2)
-pr2 <- profile(fit_lmer2)
+```{r mundlakModel}
+mundlak <- lmer(ValorUnitario ~ Area + Area_gm + AreaVerde + (1|Bairro), data = amostra)
+s2 <- summary(mundlak)
+re2 <- ranef(mundlak)
+fe2 <- fixef(mundlak)
+pr2 <- profile(mundlak)
 ```
 
 ## Resultados
@@ -531,7 +542,8 @@ stargazer(fit, fit_lmer, fit_lmer2, mundlak, header = FALSE, label = "tab:fits",
           intercept.bottom = FALSE, intercept.top = TRUE, report = "vcs*", 
           single.row = TRUE, star.cutoffs = c(0.30, 0.20, 0.10),
           omit.stat = c("rsq", "adj.rsq", "ser","f"), table.placement = "H",
-          font.size = "scriptsize")
+          font.size = "scriptsize",
+          covariate.labels = c("Intercepto", "(Area - 400)", paste("Bairro", LETTERS[1:10]), "Area", "Area (contexto)", "Area Verde"))
 ```
 
 Deve-se notar, primeiramente, que os valores estimados pelo modelo de
@@ -665,7 +677,9 @@ densityplot(pr)
 ```{r pr1, fig.cap="Densidades dos parâmetros do modelo de efeitos mistos com variável de segundo nível."}
 densityplot(pr1)
 ```
-
+```{r pr2, fig.cap="Densidades dos parâmetros do modelo de Mundlak."}
+densityplot(pr2)
+```
 
 ## Previsão de Valores
 
@@ -798,32 +812,63 @@ A tabela abaixo mostra os valores previsto pelos modelos para um
 lote-padrão de 400 $m^2$ nos diversos bairros:
 
 ```{r}
-lote_padrao_A <- data.frame(Area = 400, Area_center = 0, AreaVerde = 0.20, Bairro = "A")
-lote_padrao_B <- data.frame(Area = 400, Area_center = 0, AreaVerde = 0.25, Bairro = "B")
-lote_padrao_C <- data.frame(Area = 400, Area_center = 0, AreaVerde = 0.30, Bairro = "C")
-lote_padrao_D <- data.frame(Area = 400, Area_center = 0, AreaVerde = 0.35, Bairro = "D")
-lote_padrao_E <- data.frame(Area = 400, Area_center = 0, AreaVerde = 0.40, Bairro = "E")
-lote_padrao_F <- data.frame(Area = 400, Area_center = 0, AreaVerde = 0.45, Bairro = "F")
-lote_padrao_G <- data.frame(Area = 400, Area_center = 0, AreaVerde = 0.50, Bairro = "G")
-lote_padrao_H <- data.frame(Area = 400, Area_center = 0, AreaVerde = 0.55, Bairro = "H")
-lote_padrao_I <- data.frame(Area = 400, Area_center = 0, AreaVerde = 0.60, Bairro = "I")
-lote_padrao_J <- data.frame(Area = 400, Area_center = 0, AreaVerde = 0.65, Bairro = "J")
-lote_padrao_K <- data.frame(Area = 400, Area_center = 0, AreaVerde = 0.70, Bairro = "K")
+lote_padrao_A <- data.frame(Area = 400, Area_center = 0, AreaVerde = unique(dados$AreaVerde)[1],  Area_gm = unique(dados$Area_gm)[1], Area_dm = 400 - unique(dados$Area_gm)[1], Bairro = "A")
+lote_padrao_B <- data.frame(Area = 400, Area_center = 0, AreaVerde = unique(dados$AreaVerde)[2],  Area_gm = unique(dados$Area_gm)[2], Area_dm = 400 - unique(dados$Area_gm)[2], Bairro = "B")
+lote_padrao_C <- data.frame(Area = 400, Area_center = 0, AreaVerde = unique(dados$AreaVerde)[3],  Area_gm = unique(dados$Area_gm)[3], Area_dm = 400 - unique(dados$Area_gm)[3], Bairro = "C")
+lote_padrao_D <- data.frame(Area = 400, Area_center = 0, AreaVerde = unique(dados$AreaVerde)[4],  Area_gm = unique(dados$Area_gm)[4], Area_dm = 400 - unique(dados$Area_gm)[4], Bairro = "D")
+lote_padrao_E <- data.frame(Area = 400, Area_center = 0, AreaVerde = unique(dados$AreaVerde)[5],  Area_gm = unique(dados$Area_gm)[5], Area_dm = 400 - unique(dados$Area_gm)[5], Bairro = "E")
+lote_padrao_F <- data.frame(Area = 400, Area_center = 0, AreaVerde = unique(dados$AreaVerde)[6],  Area_gm = unique(dados$Area_gm)[6], Area_dm = 400 - unique(dados$Area_gm)[6], Bairro = "F")
+lote_padrao_G <- data.frame(Area = 400, Area_center = 0, AreaVerde = unique(dados$AreaVerde)[7],  Area_gm = unique(dados$Area_gm)[7], Area_dm = 400 - unique(dados$Area_gm)[7], Bairro = "G")
+lote_padrao_H <- data.frame(Area = 400, Area_center = 0, AreaVerde = unique(dados$AreaVerde)[8],  Area_gm = unique(dados$Area_gm)[8], Area_dm = 400 - unique(dados$Area_gm)[8], Bairro = "H")
+lote_padrao_I <- data.frame(Area = 400, Area_center = 0, AreaVerde = unique(dados$AreaVerde)[9],  Area_gm = unique(dados$Area_gm)[9], Area_dm = 400 - unique(dados$Area_gm)[9], Bairro = "I")
+lote_padrao_J <- data.frame(Area = 400, Area_center = 0, AreaVerde = unique(dados$AreaVerde)[10], Area_gm = unique(dados$Area_gm)[10],Area_dm = 400 - unique(dados$Area_gm)[10],  Bairro = "J")
+# EF Predsa <- predict(fit, newdata = lote_padrao_A)
+a <- predict(fit, newdata = lote_padrao_A)
+b <- predict(fit, newdata = lote_padrao_B)
+c <- predict(fit, newdata = lote_padrao_C)
+d <- predict(fit, newdata = lote_padrao_D)
+e <- predict(fit, newdata = lote_padrao_E)
+f <- predict(fit, newdata = lote_padrao_F)
+g <- predict(fit, newdata = lote_padrao_G)
+h <- predict(fit, newdata = lote_padrao_H)
+i <- predict(fit, newdata = lote_padrao_I)
+j <- predict(fit, newdata = lote_padrao_J)
+# MixedModel Preds
+a1 <- predict(fit_lmer2, newdata = lote_padrao_A)
+b1 <- predict(fit_lmer2, newdata = lote_padrao_B)
+c1 <- predict(fit_lmer2, newdata = lote_padrao_C)
+d1 <- predict(fit_lmer2, newdata = lote_padrao_D)
+e1 <- predict(fit_lmer2, newdata = lote_padrao_E)
+f1 <- predict(fit_lmer2, newdata = lote_padrao_F)
+g1 <- predict(fit_lmer2, newdata = lote_padrao_G)
+h1 <- predictInterval(fit_lmer2, newdata = lote_padrao_H, seed = seed, which = 'all')$fit[1]
+i1 <- predict(fit_lmer2, newdata = lote_padrao_I)
+j1 <- predict(fit_lmer2, newdata = lote_padrao_J)
+# Mundlak Preds
+a2 <- predict(mundlak, newdata = lote_padrao_A)
+b2 <- predict(mundlak, newdata = lote_padrao_B)
+c2 <- predict(mundlak, newdata = lote_padrao_C)
+d2 <- predict(mundlak, newdata = lote_padrao_D)
+e2 <- predict(mundlak, newdata = lote_padrao_E)
+f2 <- predict(mundlak, newdata = lote_padrao_F)
+g2 <- predict(mundlak, newdata = lote_padrao_G)
+h2 <- predictInterval(mundlak, newdata = lote_padrao_H, seed = seed, which = 'all')$fit[1]
+i2 <- predict(mundlak, newdata = lote_padrao_I)
+j2 <- predict(mundlak, newdata = lote_padrao_J)
 ```
 
-| Bairro | Modelo de efeitos fixos                        | Modelos de efeitos mistos com variável de segundo nível |
-|:------:|:----------------------------------------------:|:-------------------------------------------------------:|
-| A      | `r brf(predict(fit, newdata = lote_padrao_A))` | `r brf(predict(fit_lmer2, newdata = lote_padrao_A))`    |              
-| B      | `r brf(predict(fit, newdata = lote_padrao_B))` | `r brf(predict(fit_lmer2, newdata = lote_padrao_B))`    |
-| C      | `r brf(predict(fit, newdata = lote_padrao_C))` | `r brf(predict(fit_lmer2, newdata = lote_padrao_C))`    |
-| D      | `r brf(predict(fit, newdata = lote_padrao_D))` | `r brf(predict(fit_lmer2, newdata = lote_padrao_D))`    |
-| E      | `r brf(predict(fit, newdata = lote_padrao_E))` | `r brf(predict(fit_lmer2, newdata = lote_padrao_E))`    |
-| F      | `r brf(predict(fit, newdata = lote_padrao_F))` | `r brf(predict(fit_lmer2, newdata = lote_padrao_F))`    |
-| G      | `r brf(predict(fit, newdata = lote_padrao_G))` | `r brf(predict(fit_lmer2, newdata = lote_padrao_G))`    |
-| H      | `r brf(predict(fit, newdata = lote_padrao_H))` | `r brf(predictInterval(fit_lmer2, newdata = lote_padrao_H, seed = seed, which = 'all')$fit[1])`    |
-| I      | `r brf(predict(fit, newdata = lote_padrao_I))` | `r brf(predict(fit_lmer2, newdata = lote_padrao_I))`    |
-| J      | `r brf(predict(fit, newdata = lote_padrao_J))` | `r brf(predict(fit_lmer2, newdata = lote_padrao_J))`    |
-| K      | `r brf(predict(fit, newdata = lote_padrao_K))` | `r brf(predict(fit_lmer2, newdata = lote_padrao_K))`    |
+| Bairro | Modelo de efeitos fixos                        | Modelo misto com variável de segundo nível  |  Modelo Mundlak  |
+|:------:|:----------------------------------------------:|:---------------------------------------------:|:----------------:|
+| A      | `r brf(a)`                                     | `r brf(a1)`                                   | `r brf(a2)`      |          
+| B      | `r brf(b)`                                     | `r brf(b1)`                                   | `r brf(b2)`      |
+| C      | `r brf(c)`                                     | `r brf(c1)`                                   | `r brf(c2)`      |
+| D      | `r brf(d)`                                     | `r brf(d1)`                                   | `r brf(d2)`      |
+| E      | `r brf(e)`                                     | `r brf(e1)`                                   | `r brf(e2)`      |
+| F      | `r brf(f)`                                     | `r brf(f1)`                                   | `r brf(f2)`      |
+| G      | `r brf(g)`                                     | `r brf(g1)`                                   | `r brf(g2)`      |
+| H      | `r brf(h)`                                     | `r brf(h1)`                                   | `r brf(h2)`      |
+| I      | `r brf(i)`                                     | `r brf(i1)`                                   | `r brf(i2)`      |
+| J      | `r brf(j)`                                     | `r brf(j1)`                                   | `r brf(j2)`      |
 Table: Previsões para valores de lote-padrão nos diferentes bairros.
 
 ### Intervalos de predição
@@ -850,7 +895,7 @@ kable(fitted_G,
       format.args = list(big.mark = ".", decimal.mark = ","),
       booktabs = TRUE,
       col.names = c("Efeitos", "Valor Central", "Limite Superior", "Limite Inferior", "Observações")) %>%
-  kable_styling(latex_options = "striped")
+  kable_styling(latex_options = c("striped", "HOLD_position"))
 ```
 
 A tabela \ref{tab:pred2} mostra o intervalo de predição para o
@@ -864,16 +909,36 @@ fitted_H <- predictInterval(fit_lmer2,
 ```
 
 ```{r pred2}
-kable(fitted_H,,
+kable(fitted_H,
       caption = "Previsão de valores com o modelos de efeitos mistos com variável de segundo nível.",
       digits = 2,
       format.args = list(big.mark = ".", decimal.mark = ","),
       booktabs = TRUE,
       col.names = c("Efeitos", "Valor Central", "Limite Superior", "Limite Inferior", "Observações")) %>%
-  kable_styling(latex_options = "striped")
+  kable_styling(latex_options = c("striped", "HOLD_position"))
 ```
 
-Para efeitos de comparação, a tabela \ref{tab:pred3} mostra o intervalo
+A tabela \ref{tab:pred3} mostra o intervalo de predição para o lote-padrão no
+bairro H, obtido com o modelo de Mundlak.
+
+```{r}
+fitted_H_Mundlak <- predictInterval(mundlak,
+                            newdata = lote_padrao_H,
+                            which = "all",
+                            seed = seed)
+```
+
+```{r pred3}
+kable(fitted_H_Mundlak,
+      caption = "Previsão de valores com o modelo de Mundlak.",
+      digits = 2,
+      format.args = list(big.mark = ".", decimal.mark = ","),
+      booktabs = TRUE,
+      col.names = c("Efeitos", "Valor Central", "Limite Superior", "Limite Inferior", "Observações")) %>%
+  kable_styling(latex_options = c("striped", "HOLD_position"))
+```
+
+Para efeitos de comparação, a tabela \ref{tab:pred4} mostra o intervalo
 de predição para o bairro H calculado com o modelo de efeitos fixos.
 
 ```{r}
@@ -882,14 +947,14 @@ p$Efeito <- "Fixo"
 p <- p[, c(4, 1, 3, 2)]
 ```
 
-```{r pred3}
+```{r pred4}
 kable(p,
       caption = "Intervalo de Predição com o modelo de efeitos fixos",
       digits = 2,
       format.args = list(big.mark = ".", decimal.mark = ","),
       booktabs = TRUE,
       col.names = c("Efeitos", "Valor Central", "Limite Superior", "Limite Inferior")) %>%
-  kable_styling(latex_options = "striped")
+  kable_styling(latex_options = c("striped", "HOLD_position"))
 ```
 
 Nota-se que os intervalos de predição do modelo de efeitos fixos
@@ -902,51 +967,47 @@ bairro H.
 
 # Conclusão
 
-A aplicação da modelagem mista ou hierárquica na Engenharia de
-Avaliaçãoes pode ser feita das mais diversas maneiras, desde a aplicação
-em avaliações de precisão, até a avaliação em massa para fins
-tributários, assim como para confecção de índices de preços de imóveis.
+A aplicação da modelagem mista ou hierárquica na Engenharia de Avaliações pode
+ser feita das mais diversas maneiras, desde a aplicação em avaliações de
+precisão, até a avaliação em massa para fins tributários, assim como para
+confecção de índices de preços de imóveis.
 
-Neste trabalho foi mostrado como a Engenharia de Avaliações pode se
-valer da modelagem hierárquica ou mista para a confecção de PVG's, com a
-utilização de modelos com interceptos aleatórios, especialmente para
-estimação de valores para lotes-padrão em agrupamentos não presentes na
-amostra, através da utilização de variáveis de segundo nível que
-\emph{expliquem} a variabilidade entre os bairros ou outros
-agrupamentos. Tais modelos são mais complexos e ao mesmo tempo
-elegantes, dividindo a variabilidade em diversos níveis, deixando claro
-ao analista de onde advém a variabilidade dos preços.
+Neste trabalho foi mostrado como a Engenharia de Avaliações pode se valer da
+modelagem hierárquica ou mista para a confecção de PVG's, com a utilização de
+modelos com interceptos aleatórios, especialmente para estimação de valores para
+lotes-padrão em agrupamentos não presentes na amostra, através da utilização de
+variáveis de segundo nível que \emph{expliquem} a variabilidade entre os bairros
+ou outros agrupamentos. Tais modelos são mais complexos e ao mesmo tempo
+elegantes, dividindo a variabilidade em diversos níveis, deixando claro ao
+analista de onde advém a variabilidade dos preços.
 
-Embora a modelagem hierárquica seja considerada mais elegante do que a
-modelagem de efeitos fixos, deve-se ter em conta que a elaboração de
-modelos mistos sem variáveis de segundo nível, como é comum encontrar na
-literatura, não é tão interessante e quase nada agrega a uma melhor
-explicação do fenômeno estudado. Deve até haver uma melhora na estimação
-com os modelos mistos caso os dados de alguns agrupamentos estejam em
-número reduzido, mas o ideal é utilizar as formulações mais complexas da
-modelagem hierárquica de maneira a explorar ao máximo este tipo de
-modelagem.
+Embora a modelagem hierárquica seja considerada mais elegante do que a modelagem
+de efeitos fixos, deve-se ter em conta que a elaboração de modelos mistos sem
+variáveis de segundo nível, como é comum encontrar na literatura, não é tão
+interessante e quase nada agrega a uma melhor explicação do fenômeno estudado.
+Deve até haver uma melhora na estimação com os modelos mistos caso os dados de
+alguns agrupamentos estejam em número reduzido, mas o ideal é utilizar as
+formulações mais complexas da modelagem hierárquica de maneira a explorar ao
+máximo este tipo de modelagem.
 
-Na análise de dados em seção transversal, como na elaboração de
-avaliações de precisão ou na elaboração de PVG's, deve ser utilizada,
-preferencialmente, a formulação de Mundlak, enquanto para dados em
-painéis, como na confecção de índices de preços de imóveis, deve ser
-preferencialmente utilizada a formulação REWB.
+Na análise de dados em seção transversal, como na elaboração de avaliações de
+precisão ou na elaboração de PVG's, deve ser utilizada, preferencialmente, a
+formulação de Mundlak, enquanto para dados em painéis, como na confecção de
+índices de preços de imóveis, deve ser preferencialmente utilizada a formulação
+REWB.
 
-Na modelagem hierárquica ainda é possível incorporar outras hipóteses
-úteis, além dos interceptos aleatórios, como também coeficientes
-aleatórios, o que deve ser tema de outro trabalho.
+Na modelagem hierárquica ainda é possível incorporar outras hipóteses úteis,
+além dos interceptos aleatórios, como também coeficientes aleatórios, o que deve
+ser tema de outro trabalho.
 
-Outra possibilidade é a modelagem em mais níveis hierárquicos. Não
-apenas os imóveis podem ser agrupados em bairros, mas também os bairros
-podem, por sua vez, ser agrupados em macrozonas urbanas, assim como
-estas podem ser agrupadas em cidades, as cidades em regiões e assim por
-diante. A execução de modelos tão complexos com efeitos fixos é
-praticamente inviável.
+Outra possibilidade é a modelagem em mais níveis hierárquicos. Não apenas os
+imóveis podem ser agrupados em bairros, mas também os bairros podem, por sua
+vez, ser agrupados em macrozonas urbanas, assim como estas podem ser agrupadas
+em cidades, as cidades em regiões e assim por diante. A execução de modelos tão
+complexos com efeitos fixos é praticamente inviável.
 
-Outra possibilidade é a modelagem dos dados ao longo do tempo, o que
-possibilita a sua utilização para a confecção de índices de preços de
-imóveis.
+Outra possibilidade é a modelagem dos dados ao longo do tempo, o que possibilita
+a sua utilização para a confecção de índices de preços de imóveis.
 
 # Sugestões para trabalhos futuros
 
