@@ -52,62 +52,105 @@ library(appraiseR)
 
 # Introdução
 
-Na Engenharia de Avaliações, assim como em diversos ramos das ciências
-sociais, a abordagem padrão para lidar com a heteregoneidade amostral é
-a modelagem com efeitos fixos. Este tipo de abordagem permite a
-segregação dos dados da amostra em diferentes agrupamentos, no entanto,
-ela não...
+Na Engenharia de Avaliações, assim como em diversos ramos das ciências sociais,
+a abordagem padrão para lidar com a heteregoneidade amostral é a modelagem com
+efeitos fixos. Este tipo de abordagem permite a segregação dos dados da amostra
+em diferentes agrupamentos, através da utilização de variáveis *dummies*[^1] que
+indicam a que agrupamento pertence cada dado amostral.
+
+Como será visto, no entanto, este tipo de modelagem elimina a possibilidade de
+*explicar* a variância *entre* os diversos grupos de dados. Na Engenharia de 
+Avaliações, quando o objetivo é a previsão de valores de um imóvel em específico, 
+isto  não acarreta em nenhum problema, a não ser que existam poucos dados nos 
+agrupamentos, o que acaba por prejudicar a estimação.
+
+No entanto, quando o objetivo é a explicação do mercado, a modelagem por efeitos
+fixos deixa a desejar: o máximo que se pode obter de um modelo de efeitos fixos
+é a magnitude do efeito da localização em um determinado agrupamento [^2]. Nada 
+que possa explicar o contexto pode ser incluído na análise, já que toda a 
+variância no nível dos agrupamentos é absorvida pelas *dummies*.
+
+Nos modelos mistos, além dos efeitos fixos ligados à explicação do valor dos
+imóveis, tais como área, número de quartos e/ou banheiros, e outros, efeitos
+aleatórios são utilizados para lidar com a heterogeneidade da amostra, seja 
+devido ao contexto, seja devido ao tempo, já que os modelos mistos possuem 
+grande aplicação na modelagem de dados em painel ou séries temporais.
+
+O objetivo deste trabalho é a apresentação dos modelos mistos e suas 
+possibilidades de aplicação na Engenharia de Avaliações. No caso da modelagem de 
+dados em seção transversal (corte), será mostrado como os modelos mistos podem
+ser úteis na elaboração de plantas de valores genéricos. Além disto, será 
+discutido brevemente a aplicação dos modelos mistos para dados em painel, o que
+pode ser útil, na Engenharia de Avaliaçãoes, na construção de índices de preços
+de imóveis.
+
+[^1]: Ou variáveis dicotômicas em grupo. Neste trabalho estas variáveis serão 
+tratadas simplesmente pelo termo em inglês *dummies*.
+
+[^2]: Plümper e Troeger (2007) propuseram efetuar a decomposição vetorial do
+modelo de efeitos fixos para a modelagem de níveis mais altos, porém este método
+foi fortemente criticado por sua imprecisão no cálculo dos erros-padrão e ainda
+possui as desvantagens de não ser possível a estimação de níveis superiores a 2 
+e de requerer a estimação em diferentes estágios [@bell2015, 140-141].
 
 # Revisão Bibliográfica
 
-A análise de dados multinível é usualmente feita, nos diversos ramos da
-ciência por meio de modelos de efeitos fixos. No entanto, de acordo com Bell *et al.*
-[-@bell2019, 1052], os modelos mistos bem especificados oferecem uma abordagem
-muito mais completa destes tipos de dados do que a modelagem por efeitos fixos.
+Os modelos de efeitos fixos são uma espécie de "padrão ouro" em diversos ramos
+da ciência para lidar com a heterogeneidade amostral. No entanto, de acordo com
+Bell *et al.* [-@bell2019, 1052], os modelos mistos bem especificados oferecem
+uma abordagem muito mais completa destes tipos de dados do que a modelagem por
+efeitos fixos.
 
 Segundo Bell *et al.* [-@bell2019, 1051], existe uma confusão na literatura a
-respeito de modelos mistos, no que tange à aglutinação em uma modelagem de
+respeito dos modelos mistos, no que tange à aglutinação em uma modelagem de
 diversos tipos de efeitos, fixos e aleatórios, sendo que os modelos mistos mais
 complexos tem sido chamados, erroneamente, de modelos híbridos.
+
+Os modelos mistos também podem ser confundidos com modelos multiníveis ou
+hierárquicos, uma vez que estes últimos são um caso particular dos primeiros,
+*i.e* os modelos hierárquicos são modelos mistos em que os dados se apresentam
+de maneira aninhada (imóveis se agrupam em bairros, que por sua vez se agrupam
+em regiões e assim por diante), o que possibilita a sua modelagem de maneira
+hierárquica. No entanto, se os dados se agrupam em diferentes grupamentos
+independentes, não aninhados, a modelagem hierárquica não se aplica, porém estes
+tipos de dados podem também ser modelados pelos modelos mistos. Em suma, todo
+modelo misto é um modelo hierárquico, mas o inverso não se aplica [@Bates].
 
 ## Modelagem por efeitos fixos
 
 A modelagem por efeitos fixos é frequentemente aplicada na Engenharia de 
 Avaliações, assim como em diversas outras áreas da ciência [@bell2019, 1057], 
-apesar desta terminologia não ser normalmente empregada.
+apesar desta terminologia não ser sempre empregada.
 
 Um modelo de efeitos fixos nada mais é do que um modelo em que a heterogeneidade 
-da amostra é "saneada" através da inclusão de variáveis *dummies*[^1]
+da amostra é "saneada" através da inclusão de variáveis *dummies*
 representando cada agrupamento de dados. Após a inclusão destas variáveis
-saneando a amostra, ou seja, tornando-a homogênea, a estimação é feita pelo
-métodos dos mínimos quadrados ordinários.
-
-[^1]: Neste trabalho as variáveis dicotômicas em grupo serão tratadas 
-simplesmente pelo termo em inglês *dummies*.
+saneando a amostra, a estimação é feita pelo métodos dos mínimos quadrados 
+ordinários.
 
 A modelagem por efeitos fixos pode ser escrita conforme a equação \ref{eq:fixef},
 onde a variância entre os agrupamentos de dados (variância de nível mais alto)
 é modelada através de variáveis *dummies* $D_j$ [@bell2015, 138]:
 
 \begin{equation} \label{eq:fixef}
-y_{ij} = \sum_{j=1}^{j}\beta_{0j}D_j + \beta_1 x_{ij} + \epsilon_{ij}
+y_{ij} = \sum_{j=1}^{j}\beta_{0j}D_j + \beta_1 x_{ij} + \varepsilon_{ij}
 \end{equation}
 
-No entanto, uma outra maneira mais conveniente - para a comparação que
-se pretende de escrever a formulação de efeitos fixos, equivalente à
+No entanto, uma outra maneira mais conveniente de escrever a formulação de 
+efeitos fixos, para a comparação que se pretende, equivalente à
 primeira, pode ser vista na equação \ref{eq:fixef2} [@bell2019, 1058]:
 
 \begin{equation} \label{eq:fixef2}
-y_{ij} = \beta_1 (x_{ij} - \bar{x}_j) + (\upsilon_i + \epsilon_{ij}) 
+y_{ij} = \beta_1 (x_{ij} - \bar{x}_j) + (\upsilon_j + \varepsilon_{ij}) 
 \end{equation}
 
-Onde $\upsilon_i$ é um termo discreto para cada agrupamento de dados[^2]. Os
+Onde $\upsilon_j$ é um termo discreto para cada agrupamento de dados[^3]. Os
 índices $i$ e $j$ se referem aos dois níveis de análise: $i$, neste caso,
 representa o nível dos indivíduos e $j$ o nível dos agrupamentos.
-$\epsilon_{ij}$ é um termo de erro aleatório com distribuição supostamente
-normal, média zero e desvio-padrão $\sigma_{\epsilon}^2$.
+$\varepsilon_{ij}$ é um termo de erro aleatório com distribuição supostamente
+normal, média zero e desvio-padrão $\sigma_{\varepsilon}^2$.
 
-[^2]: O termo $\upsilon_i$ é o intercepto de cada agrupamento, quando se 
+[^3]: O termo $\upsilon_j$ é o intercepto de cada agrupamento, quando se 
 ajusta um modelo sem intercepto.
 
 Na prática, no entanto, a formulação acima raramente é utilizada, pois
@@ -117,16 +160,16 @@ a diferença entre os níveis de cada agrupamento em relação a este nível
 de referência, como ilustrado na equação \ref{eq:fixef3} [@bell2019, 1058]:
 
 \begin{equation} \label{eq:fixef3}
-(y_{ij} - \bar{y}_i) = \beta_1 (x_{ij} - \bar{x}_j) + (\epsilon_{ij}) 
+(y_{ij} - \bar{y}_i) = \beta_1 (x_{ij} - \bar{x}_j) + (\varepsilon_{ij}) 
 \end{equation}
 
 ## Modelagem por efeitos mistos
 
-Existem diversas maneiras de utilização da modelagem por efeitos mistos.
-Neste trabalho apresentam-se as diversas possibilidades, desde a
-abordagem mais simples, que possibilita uma melhor comparação com o
-modelo de efeitos fixos, muito conhecido na Engenharia de Avaliações,
-até a abordagem mais complexa, a formulação REWB.
+Existem diversas formas de se utilizar os modelos mistos. Neste trabalho 
+apresentam-se diversas possibilidades, desde a abordagem mais simples, que 
+possibilita uma melhor comparação com o modelo de efeitos fixos, muito conhecido 
+na Engenharia de Avaliações, até a abordagem mais complexa, a formulação REWB
+(Random Effects Within-Between).
 
 ### Modelo de efeitos mistos simples
 
@@ -136,29 +179,33 @@ escrever a formulação de efeitos mistos pode ser vista na equação
 \ref{eq:mixef}.
 
 \begin{equation} \label{eq:mixef}
-y_{ij} = \beta_0 + \beta_1^{RE} x_{ij} + \beta_2 z_j + (\upsilon_j + \epsilon_{ij}) 
+y_{ij} = \beta_0 + \beta_1^{RE} x_{ij} + \beta_2 z_j + (\upsilon_j + \varepsilon_{ij}) 
 \end{equation}
 
 No caso da equação \ref{eq:mixef}, o termo $\upsilon_j$ é um termo
 estocástico de efeitos aleatórios para os indivíduos, suposto
 normalmente distribuído e com média zero, ou seja
 $\upsilon_j \sim N(0, \sigma_{\upsilon}^2)$ [@bell2019, 1055]. A variável $x_{ij}$
-é uma variável de nível 1, variante entre os diferentes agrupamentos e a
-variável $z_j$ é uma variável de nível 2, considerada invariante entre
-os agrupamentos. Neste tipo de modelagem estimam-se, além dos
-coeficientes das variáveis de nível mais baixo $\beta_0$ e
-$\beta_1$, o(s) coeficiente(s) da(s) variável(eis) de segundo nível
-$\beta_2$ e os parâmetros $\sigma_\upsilon^2$ e
-$\sigma_\epsilon^2$, ou seja, as variâncias de primeiro e segundo
-nível, respectivamente.
+é uma variável de nível 1, variante entre os indivíduos e a variável $z_j$ é uma 
+variável de nível 2, invariante entre os agrupamentos, *i.e.* a variável $z_j$
+não é uma variável hedônica dos imóveis, mas uma variável que representa todo um
+grupo de imóveis [^4]. 
+
+[^4]: É possível utilizar os models mistos sem a utilização de qualquer variável 
+de segundo nível, obtendo-se um modelo de interceptos aleatórios.
+
+Neste tipo de modelagem estimam-se, além dos coeficientes das 
+variáveis de nível mais baixo, $\beta_0$ e $\beta_1$, o(s) coeficiente(s) da(s) 
+variável(eis) de segundo nível $\beta_2$ e os parâmetros $\sigma_\upsilon^2$ e
+$\sigma_\varepsilon^2$, ou seja, as variâncias de primeiro e segundo nível, 
+respectivamente.
 
 A diferença de nível entre as variáveis pode ser melhor compreendida ao
-se dividir a modelagem em dois níveis (alguns autores se referem a este
-tipo de modelagem como hierárquica), como pode ser visto nas equações
-\ref{eq:micro} e \ref{eq:macro}:
+se dividir a modelagem em dois níveis (modelagem hierárquica), como pode ser 
+visto nas equações \ref{eq:micro} e \ref{eq:macro}:
 
 \begin{equation} \label{eq:micro}
-y_{ij} = \beta_{0j} + \beta_1^{RE} x_{ij} + \epsilon_{ij} 
+y_{ij} = \beta_{0j} + \beta_1^{RE} x_{ij} + \varepsilon_{ij} 
 \end{equation}
 
 \begin{equation} \label{eq:macro}
@@ -171,19 +218,22 @@ formulação de efeitos mistos, que são estimadas em conjunto ao substituir
 \ref{eq:macro} em \ref{eq:micro} para se obter o modelo misto da equação 
 \ref{eq:mixef}.
 
-Em suma, para Bell \emph{et al.} [-@bell2019, 1061], a grande diferença
+Em suma, para Bell *et al.* [-@bell2019, 1061], a grande diferença
 entre a formulação de efeitos fixos e a formulação de efeitos mistos
 está na maneira como as modelagens tratam os agrupamentos de dados, se
 de maneira discreta (efeitos fixos) ou de maneira aleatória (efeitos
 aleatórios). Enquanto na modelagem de efeitos fixos são adicionadas
-variáveis \emph{dummies} discretas para a modelagem dos diferentes
+variáveis *dummies* discretas para a modelagem dos diferentes
 agrupamentos, na modelagem de efeitos aleatórios é considerado que a
 diferença entre os dados de diferentes agrupamentos pode ser modelada
-por uma variável aleatória normal. Assim, os modelos de efeitos fixos
-consomem todos os graus de liberdade do segundo nível hierárquico ,
-matando assim a possibilidade de inferências a respeito da variância em
-nível mais alto, sendo impossível medir os efeitos de variáveis como
-$z_j$, na equação \ref{eq:mixef} [@bell2015, 139].
+por uma variável aleatória normal.
+
+Enquanto nos modelos mistos a variância é dividida em duas partes, uma ao nível 
+dos indivíduos e outra ao nível dos agrupamentos, nos modelos de efeitos fixos 
+a variância entre os agrupamentos é totalmente absorvida pelas variáveis 
+*dummies*, que consomem todos os graus de liberdade do segundo nível hierárquico, 
+eliminando dessa forma qualquer possibilidade de introdução de variáveis 
+como $z_j$, na equação \ref{eq:mixef} [@bell2015, 139].
 
 Segundo os autores citados, ainda, esta visão não é unânime: na
 econometria, por exemplo, é considerado que a diferença fundamental
@@ -192,15 +242,29 @@ hipótese considerada pelos modelos mistos de que não há correlação dos
 efeitos aleatórios (representados por $\upsilon_i$) e os regressores
 ($x_ij$), o que é permitido na modelagem de efeitos fixos [@bell2019, 1060].
 
-Este tipo de modelagem ainda pode ser facilmente estendida para incorporar
-outros níveis hierárquicos mais altos, assim como variabilidade não apenas para
-os interceptos, mas também para os coeficientes das variáveis explicativas
-[@bell2019, 1052].
+Deve-se notar ainda que os modelos mistos, tal como apresentados na equação
+\ref{eq:mixef}, ainda podem ser facilmente estendidos para incorporar outros
+níveis hierárquicos mais altos, ou ainda a variabilidade não apenas para os
+interceptos, mas também para os coeficientes das variáveis explicativas, com o
+consumo de apenas mais um grau de liberdade, como pode ser visto na equação
+\ref{eq:mixef2}, onde além do termo aleatório relacionado aos interceptos é
+adicionado outro termo aleatório, $\gamma_j \sim N(0, \sigma^2_\gamma)$, 
+relacionado às inclinações, formando assim um modelo de interceptos e 
+inclinações aleatórias [@bell2019, 1052]:
+
+\begin{equation} \label{eq:mixef2}
+y_{ij} = (\beta_0 + \upsilon_j) + (\beta_1 + \gamma_j) x_{ij} + \beta_2 z_j + \varepsilon_{ij}
+\end{equation}
+
+Na modelagem por efeitos fixos seriam necessárias a inclusão de diversos termos
+de interação para a modelagem de uma inclinação diferente para cada agrupamento,
+gerando um modelo cuja estimação é extremamente custosa em termos de graus de
+liberdade.
 
 ### Formulação de Mundlak
 
 Esta formulação consiste da introdução de um termo adicional à parte macro do 
-modelo, que leva em conta a variação entre os grupos (*between effect*), de 
+modelo, que leva em conta a variação *entre* os grupos (*between effect*), de 
 maneira que a equação \ref{eq:macro} torna-se:
 
 \begin{equation} \label{eq:macro2}
@@ -212,28 +276,33 @@ equação \ref{eq:mundlak}, que é conhecida na literatura como formulação de
 Mundlak [@bell2015, 1055]:
 
 \begin{equation} \label{eq:mundlak}
-y_{ij} = \beta_0 + \beta_{1} x_{ij} + \beta_{3}\bar{x}_j+ \beta_2 z_j + (\upsilon_j + \epsilon_{ij}) 
+y_{ij} = \beta_0 + \beta_{1} x_{ij} + \beta_{3}\bar{x}_j+ \beta_2 z_j + (\upsilon_j + \varepsilon_{ij}) 
 \end{equation}
 
-Segundo Bell *et al.* [@bell2019, 1055], na formulação de Mundlak o efeito
+Segundo Bell *et al.* [-@bell2019, 1055], na formulação de Mundlak o efeito
 contextual, representado na equação \ref{eq:mundlak} pelo termo $\beta_{3}$
-(algumas vezes escrito como $\beta_{C}$), é de interesse, pois mostra a 
-*diferença* entre os efeitos dentro (*within effect*) e entre (*between effect*) 
-os grupos. 
+(algumas vezes escrito como $\beta_{C}$), é de interesse, pois mostra a
+*diferença* entre os efeitos *dentro* (*within effect*) e *entre* (*between
+effect*) os grupos.
 
-Na prática, segundo Bell *et al.* [@bell2019, 1057], os modelos de Mundlak e os
-modelos de efeitos fixos estimarão exatamente os mesmos valores para os
-coeficientes de efeitos dentro dos agrupamentos (*within effects*),
-representado na formulação acima pelo termo $\beta_1$ (algumas vezes escrito
-$\beta_{W}$). 
+Na prática, os modelos de Mundlak e os modelos de efeitos fixos estimarão 
+exatamente os mesmos valores para os coeficientes de efeitos dentro dos 
+agrupamentos (*within effects*), representado na formulação acima pelo termo 
+$\beta_1$, algumas vezes escrito $\beta_{W}$ [@bell2019, 1057]. 
 
-Esta formulação, segundo Bell *et al.* [-@bell2015, 1056], é particularmente 
+Esta formulação, segundo Bell *et al.* [-@bell2019, 1056], é particularmente 
 interessante para a análise de dados em seção transversal, pois o coeficiente
 $\beta_C$ representa o efeito da mundança de grupo de um indivíduo, mantidas as
-suas características. Na Engenharia de  Avaliações, por exemplo, o valor de 
-$\beta_C$ pode representas o quanto um lote-padrão aumentaria (ou diminuiria) de
-valor se ele pertencesse a um outro bairro ou zona, o que é particularmente 
-interessante para a confecção de planta de valores genéricos.
+suas características. 
+
+Na Engenharia de  Avaliações, por exemplo, o valor de $\beta_C$ pode representar
+qual é a influência de uma característica no valor de um lote-padrão, quando
+este lote-padrão muda de um bairro ou zona para outro, o que é particularmente
+interessante para a confecção de planta de valores genéricos. Por exemplo, 
+imagine-se que se esteja tratando da variável área do lote: enquanto $\beta_W$
+representa o efeito da mudança de área de um imóvel dentro dos agrupamentos,
+$\beta_C$ representará o efeito da mudança da área média do agrupamento sobre o
+valor do lote, ou seja, qual o efeito do contexto sobre o valor do lote. 
 
 ### Formulação Within-Between
 
@@ -251,67 +320,105 @@ equação \ref{eq:mundlak}, escrevendo-o explicitamente como uma diferença em
 relação ao coeficiente $\beta_1$, conforme mostrado pela equação \ref{eq:rewb1}
 
 \begin{equation} \label{eq:rewb1}
-y_{ij} = \beta_0 + \beta_1 x_{ij} + (\beta_{4} - \beta_1) \bar{x}_j+ \beta_2 z_j + (\upsilon_j + \epsilon_{it}) 
+y_{ij} = \beta_0 + \beta_1 x_{ij} + (\beta_{4} - \beta_1) \bar{x}_j+ \beta_2 z_j + (\upsilon_j + \varepsilon_{it}) 
 \end{equation}
 
 Rearranjando conveniente a equação \ref{eq:rewb1}, chega-se à formulação REWB, 
 como mostra a equação \ref{eq:rewb2}:
 
 \begin{equation} \label{eq:rewb1}
-y_{ij} = \beta_0 + \beta_1 (x_{ij} - \bar{x}_j) + \beta_4 \bar{x}_j+ \beta_2 z_j + (\upsilon_j + \epsilon_{it}) 
+y_{ij} = \beta_0 + \beta_1 (x_{ij} - \bar{x}_j) + \beta_4 \bar{x}_j+ \beta_2 z_j + (\upsilon_j + \varepsilon_{it}) 
 \end{equation}
 
-É possível ainda a construção de um modelo ainda mais genérico que permite não
-apenas a modelagem de interceptos aleatórios mas também a modelagem de
-coeficientes aleatórios, como descrito na equação \ref{eq:rewb2}:
+Mais uma vez é possível, ainda, a adição de inclinações aleatórias nesta 
+formulação, obtendo-se assim a formulação mais genérica possíve, como pode ser
+visto na equação \ref{eq:rewb2}:
 
 \begin{equation} \label{eq:rewb2}
 y_{ij} = \mu + \beta_{W} (x_{ij} - \bar{x}_j) + \beta_{B}\bar{x}_j+ 
-\beta_2 z_j + \upsilon_{j0} + \upsilon_{j1} (x_{ij} - \bar{x}_j) + \epsilon_{ij0} 
+\beta_2 z_j + \upsilon_{j0} + \upsilon_{j1} (x_{ij} - \bar{x}_j) + \varepsilon_{ij0} 
 \end{equation}
 
-Onde o termo $\upsilon_{j0}$ está relacionado à aleatoriedade do
-intercepto e o termo $\upsilon_{j1}$ está relacionado à aleatoriedade
-do coeficiente da variável $x$.
+Onde o termo $\upsilon_{j0}$ está relacionado à aleatoriedade do intercepto e o
+termo $\upsilon_{j1}$ está relacionado à aleatoriedade do coeficiente da
+variável $x$.
 
 ## Considerações sobre a pertinência de cada modelagem
 
 Segundo Bell e Jones [-@bell2015, 143], um modelo de efeitos fixos pode ser
 visto como uma forma de modelo de efeitos mistos onde a variância nos níveis
-mais altos é restringida, de maneira que para BELL; JONES
-(\protect\hyperlink{ref-bell2015}{2015}) os modelos de efeitos mistos são muito
-mais interessantes do que os modelos de efeitos fixos, já que além de
-propiciarem todas as informações que os modelos de efeitos fixos propriciam,
-eles ainda tem possibilidade de ir além e fornecer outras informações que os
-modelos de efeitos fixos não fornecem, como a separação dos efeitos de uma
-variável entre (efeito \emph{between}) os agrupamentos e dentro (efeito
-\emph{within}) dos agrupramentos. Para Bell *et al.* [-@bell2019, 1060], para o
-efeito dentro dos agrupamentos (\emph{within effect}), os resultados estimados
-pela formulação REWB ou pela formulação de Mundlak serão rigorosamente os mesmos
-obtidos pelo modelo de efeitos fixos. No entanto, enquanto os modelos de REWB e
-de Munlak fornecem informações a respeitos dos efeitos entre os agrupamentos
-(\emph{between effects}), os modelos de efeitos fixos não são capazes de
-fornecer qualquer informação a este respeito.
+mais altos é restringida a infinito. Desta maneira, para Bell e Jones 
+[-@bell2015], os modelos de efeitos mistos são muito mais interessantes do que 
+os modelos de efeitos fixos, já que além de propiciarem todas as informações que 
+os modelos de efeitos fixos propiciam, eles ainda tem possibilidade de ir além e 
+fornecer outras informações que os modelos de efeitos fixos não fornecem, como a 
+separação dos efeitos de uma variável *entre*  os agrupamentos e *dentro* dos 
+agrupramentos. Para Bell *et al.* [-@bell2019, 1060], para o efeito *dentro* dos 
+agrupamentos, os resultados estimados pela formulação REWB ou pela formulação de 
+Mundlak serão rigorosamente os mesmos obtidos pelo modelo de efeitos fixos. No 
+entanto, enquanto os modelos de REWB e de Munlak fornecem informações a respeito 
+dos efeitos *entre* os agrupamentos, os modelos de efeitos fixos não são capazes 
+de fornecer qualquer informação a este respeito, já que a variância de nível 
+mais alto foi restringida.
 
-Deve ser observado que a hipótese de modelar os diversos agrupamentos
-como uma variável aleatória é razoável apenas quando o número de
-agrupamentos for grande o suficiente. Para poucos agrupamentos, a
-modelagem por efeitos fixos ainda parece ser mais adequada [ver @bell2019, 1071].
+Deve ser feita uma distinção também entre os objetivos da modelagem: na 
+Engenharia de Avaliações, se o objetivo for determinar o valor de um imóvel em
+específico a partir de uma amostra heterogênea, sem a pretensão de explicar a
+diferença de valores entre os diversos agrupamentos, a formulação de efeitos
+fixos é suficiente, exceto no caso de não haver dados suficientes para uma boa
+estimação dentro de cada agrupamento. Já quando o objetivo é a obtenção do valor
+de um imóvel padrão em diferentes agrupamentos, como na elaboração de uma PVG, 
+a modelagem por efeitos mistos é a mais adequada, especialmente se não se dispõe
+de dados disponíveis para os diferentes agrupamentos, mas apenas para uma parte
+(representativa) deles, caso em que a adição de variáveis de nível mais alto
+podem ser utilizadas para a previsão de valores nos agrupamentos não-amostrados.
 
-Também deve ser observado que a utilização da formulação simples para
-modelos mistos, como a da equação \ref{eq:mixef}, como muitas vezes se
-encontra na prática [ver @polonia], não é tão interessante como a
-aplicação das modelagens REWB e de Mundlak. No entanto, a aplicação da
-formulação REWB e de Mundlak só faz sentido se houver efetivamente uma
-diferença entre os efeitos dentro e entre os agrupamentos. Caso
-$\beta_{1W} = \beta_{2B}$ (REWB) ou $\beta_{2C} = 0$ (Mundlak), não
-faz sentido utilizar estas formulações e a formulação simples de efeitos
-mistos (equação \ref{eq:mixef}) deve ser a adotada [@bell2019, 1058].
+Deve ser observado também que a hipótese de modelar os diversos agrupamentos
+como uma variável aleatória é razoável apenas quando o número de agrupamentos
+for grande o suficiente. Para poucos agrupamentos, a modelagem por efeitos fixos
+ainda parece ser mais adequada [ver @bell2019, 1071].
+
+Também deve ser observado, ainda, que a utilização da formulação simples para
+modelos mistos, como a da equação \ref{eq:mixef}, como muitas vezes se encontra
+na prática [ver @polonia], não é tão interessante como a aplicação das
+modelagens REWB e de Mundlak. No entanto, a aplicação da formulação REWB e de
+Mundlak só faz sentido se houver efetivamente uma diferença entre os efeitos
+dentro e entre os agrupamentos. Caso $\beta_{1W} = \beta_{2B}$ (REWB) ou
+$\beta_{2C} = 0$ (Mundlak), não faz sentido utilizar estas formulações e a
+formulação simples de efeitos mistos (equação \ref{eq:mixef}) deve ser a adotada
+[@bell2019, 1058].
 
 ## Estimação em modelos mistos
 
-Segundo Clark [-@clark2019shrinkage], a estimação em modelos mistos é feita à 
-partir do encolhimento.
+Existem diversas formas de estimação para os modelos mistos. Segundo Jones e 
+Bullen [-@jones1994, 258], até meados da década de 80 a falta de algoritmos de 
+estimação gerais limitava severamente a aplicação da modelagem multinível. 
+Durante a década de 80, contudo, três algoritmos tornaram-se disponíveis, sendo 
+os mais importantes o procedimento de Goldstein [-@goldstein], que consistia na 
+estimação dos mínimos quadrados generalizados de maneira iterativa e um 
+algoritmo denominado Fischer-scoring [@longford]. 
+
+Mais recentemente, a estimação através da penalização de mínimos quadrados 
+ponderados tem se mostrado superior em termos computacioanis [@Bates3; @Bates2].
+
+Os detalhes da implementação estão além do escopo deste artigo e podem ser 
+vistos em Bates [-@Bates2].
+
+Segundo Clark [-@clark2019shrinkage], uma das características mais fortes da
+estimação em modelos mistos está relacionada ao encolhimento, ou seja, a
+suposição da normalidade dos efeitos aleatórios tem o efeito de penalizar mais
+as observações mais discrepantes, fazendo com que os interceptos e coeficientes
+previstos se encolham em direção aos valores médios.
+
+Isto é particularmente interessante no caso da presença de agrupamentos com
+pequeno número de dados: enquanto nos modelos de efeitos fixos os valores dos
+coeficientes e interceptos se superajustam a estes poucos dados, gerando valores
+extremos, nos modelos de efeitos mistos, os agrupamentos com menos dados e
+valores potencialmente mais extremos, tem os valores dos coeficientes e
+interceptos encolhidos em relação à média. É comum se referir a este efeito como
+um "empréstimo de força", *i.e.* a previsão nos agrupamentos de menor número de
+dados é fortalecida pelo "empréstimo" de dados de outros agrupamentos 
+[@jones1994, 260].
 
 # Estudo de Caso
 
@@ -341,23 +448,6 @@ Av <- rep(seq(.2, .65, .05), each = a)
 #
 ```
 
-Foram criados `r a*b` dados de lotes, divididos igualmente em `r b` bairros, 
-a partir de simulação com o auxílio do software **R**.
-
-Os dados foram criados conforme parâmetros da tabela 1:
-
-| Variável              | Tipo          | Distribuição | Parâmetros                          | Obs.                      |
-|:----------------------|--------------:|:------------:|------------------------------------:|:-------------------------:|
-| Área ($A$)            | Quantitativa  | Normal       | $\mu = 400 \ @ \ 500, \sigma = 50$  |  -                        |
-| Bairro                | Qualitativa   | -            | A a J                               |  -                        |
-| Áreas Verdes ($A_V$)  | Quantitativa  | Uniforme     | $\mu = 0,2 \quad a \quad 0,65$      |Um valor para cada bairro  |
-| $\beta_{0}$           | Coeficiente   | Discreta     | 2500                                |  -                        |
-| $\upsilon$            | Termo de erro | Normal       | $\mu = 0, \sigma = 50$              |  -                        |
-| $\beta_{0j}$          | Coeficiente   | Não definida | $\beta_0 + 4000A_{Vj} - 3.5 \overline{A_j} + \upsilon_j$ |  -   |
-| $\epsilon$            | Termo de erro | Normal       | $\mu = 0, \sigma = 100$              |  -                       |
-| Valor Unitário ($VU$) | Quantitativa  | Não definida | $\beta_{0j} - 3,0 A + \epsilon$     |  -                        | 
-
-
 ```{r}
 dados <- tibble(Area = A,
                 AreaVerde = rep(seq(.2, .65, .05) + rnorm(10, 0, .025), each = a),
@@ -369,8 +459,8 @@ dados$Area_center <- as.numeric(scale(dados$Area, center = 400, scale = FALSE))
 #
 # Equação de segundo nível
 #
-beta_zero <- 3000
-beta_zeroj <- beta_zero + 4000*Av - 3.5*dados$Area_gm  + rnorm(b*a, mean = 0, sd = 50)
+beta_zero <- 2500
+beta_zeroj <- beta_zero + 4000*Av + 5*dados$Area_gm  + rnorm(b*a, mean = 0, sd = 50)
 #
 # Equação mista
 #
@@ -381,6 +471,38 @@ bairroH <- which(dados$Bairro == "H")
 newdata <- dados[bairroH, ]
 amostra <- dados[setdiff(1:550, bairroH), ]
 ```
+
+Foram criados `r a*b` dados de lotes, divididos igualmente em `r b` bairros, 
+a partir de simulação com o auxílio do software **R**.
+
+Os dados foram criados conforme a equação abaixo \ref{eq:EC1} e \ref{eq:EC2}, abaixo:
+
+\begin{align}
+ValorUnitario &= \beta_{0j} - 3,0 Area + \varepsilon_{ij}  \label{eq:EC1}\\
+\beta_{0j} &= \beta_0 + 4000 A_{Vj} + 5 \overline{Area_j} + \upsilon_j \label{eq:EC2}
+\end{align}
+
+Onde:
+
+1. $Area$ são as áreas dos lotes;
+2. $A_{Vj}$ é uma variável de nível 2 que representa a porcentagem de
+áreas verdes em cada bairro, em relação à área total;
+3. $\overline{Area_j}$ é a área média dos lotes em cada bairro;
+4. $\varepsilon_{ij}$ é o termo de erro no primeiro nível de análise;
+5. $\upsilon_j$ é o termo de erro no segundo nível de análise.
+
+Os parâmetros adotados para cada variável podem ser vistos na tabela 1:
+
+| Variável                       | Tipo          | Distribuição | Parâmetros                          | Obs.                      |
+|:-------------------------------|--------------:|:------------:|------------------------------------:|:-------------------------:|
+| Área do lote ($Area$)          | Quantitativa  | Normal       | $\mu = 400 \ a \ 500, \sigma = 50$  |  -                        |
+| Área média ($\overline{Area}$) | Quantitativa  | Discreta     | $\sim 400 \ a \ 500$                | De 25 em 25               |
+| Bairro                         | Qualitativa   | -            | A a J                               |  -                        |
+| Áreas Verdes ($A_V$)           | Quantitativa  | Uniforme     | $\mu = 0,2 \ a \ 0,65$              | De 0,05 em 0,05           |
+| $\beta_{0}$                    | Coeficiente   | Discreta     | 3000                                |  -                        |
+| $\upsilon$                     | Erro          | Normal       | $\mu = 0, \sigma_\upsilon = 50$     |  -                        |
+| $\varepsilon$                  | Erro          | Normal       | $\mu = 0, \sigma_\varepsilon = 100$ |  -                        |
+Table: Parâmetros utilizados para simulação dos dados.
 
 ## Análise exploratória dos dados
 
@@ -439,9 +561,9 @@ Com os dados gerados, foi elaborado um modelo de efeitos fixos sem
 intercepto, apenas para que fique claro o valor do intercepto aleatório
 de cada bairro. Para dar interpretação a estes interceptos aleatórios, a
 variável $Area$ foi centralizada em relação à área de um lote-padrão,
-considerado de 400 $m^2$[^3]
+considerado de 400 $m^2$[^5]
 
-[^3]: A centralização de variáveis aqui presente não pretende nenhuma separação 
+[^5]: A centralização de variáveis aqui presente não pretende nenhuma separação 
 entre efeitos \emph{within} e  \emph{between}, mas apenas possibilitar uma 
 interpretação para os valores do coeficientes dos interceptos para cada bairro. 
 Ver Droubi *et al.* [-@droubi2019] para mais detalhes sobre este tipo de centralização. 
@@ -449,11 +571,11 @@ Ver Droubi *et al.* [-@droubi2019] para mais detalhes sobre este tipo de central
 O modelo é descrito pela equação \ref{eq:fixefEC}:
 
 \begin{equation} \label{eq:fixefEC}
-ValorUnitario = \beta_1 (Area - 400) + \beta_{2i}Bairro_i + \epsilon
+ValorUnitario = \beta_1 (Area - 400) + \beta_{2j}Bairro_j + \varepsilon
 \end{equation}
 
-onde $\beta_{2i}$ são os coeficientes das variáveis dicotômicas em
-grupo ($Bairro_i$).
+onde $\beta_{2j}$ são os coeficientes das variáveis dicotômicas em grupo 
+($Bairro_j$).
 
 ```{r}
 fit <- lm(ValorUnitario ~ Area_center + Bairro - 1, data = dados)
@@ -475,10 +597,10 @@ Foi elaborado um modelo misto simples, sem separação de efeitos entre e
 dentro dos agrupamentos, de acordo com a equação \ref{eq:simples}:
 
 \begin{equation} \label{eq:simples}
-ValorUnitario = \beta_0 + \beta_1 (Area - 400) + \upsilon_i + \epsilon
+ValorUnitario = \beta_0 + \beta_1 (Area - 400) + \upsilon_j + \varepsilon
 \end{equation}
 
-Onde $\upsilon_i$ é uma variável aleatória que foi utilizada para
+Onde $\upsilon_j$ é uma variável aleatória que foi utilizada para
 modelar os diferentes bairros.
 
 ```{r simpleMixedModel}
@@ -493,15 +615,11 @@ pr <- profile(fit_lmer)
 #### Modelo misto com variável de segundo nível
 
 Foi elaborado um modelo misto simples, porém com a presença de variáveis
-de segundo nível hierárquico, como demonstrado na equação
-\ref{eq:2ndlevel}
+de segundo nível hierárquico, como demonstrado na equação \ref{eq:2ndlevel}:
 
 \begin{equation} \label{eq:2ndlevel}
-ValorUnitario = \beta_0 + \beta_1 (Area - 400) + \beta_2 A_V+ \upsilon_i + \epsilon
+ValorUnitario = \beta_0 + \beta_1 (Area - 400) + \beta_2 A_{Vj}+ \upsilon_j + \varepsilon
 \end{equation}
-
-Onde $A_V$ é uma variável de nível 2 que representa a porcentagem de
-áreas verdes em cada bairro, em relação à área total.
 
 ```{r 2ndlevelModel}
 fit_lmer2 <- lmer(ValorUnitario ~ Area_center + AreaVerde + (1|Bairro), data = amostra)
@@ -518,7 +636,7 @@ modelo foi elaborado de acordo com a formulação exibida na equação
 \ref{eq:ECMundlak}:
 
 \begin{equation} \label{eq:ECMundlak}
-ValorUnitario = \beta_0 + \beta_1 Area + \beta_{1C} \overline{Area}_i + \beta_2 A_V+ \upsilon_i + \epsilon
+ValorUnitario = \beta_0 + \beta_1 Area + \beta_{1C} \overline{Area_j} + \beta_2 A_{Vj} + \upsilon_j + \varepsilon
 \end{equation}
 
 ```{r mundlakModel}
@@ -532,8 +650,8 @@ pr2 <- profile(mundlak)
 ## Resultados
 
 A tabela \ref{tab:fits} mostra as estatísticas básicas dos diversos
-modelos mistos (colunas (2), (3) e (4)) comparados aos modelo de efeitos
-fixos (coluna (1)).
+modelos mistos (colunas 2, 3 e 4) comparados aos modelo de efeitos
+fixos (coluna 1).
 
 ```{r, results='asis'}
 stargazer(fit, fit_lmer, fit_lmer2, mundlak, header = FALSE, label = "tab:fits", 
@@ -553,17 +671,19 @@ estimação do modelo misto simples, descritos na tabela
 \ref{tab:somaitcpt}, onde os valores de referência para cada bairro
 foram obtidos através da soma do intercepto global do modelo misto
 simples com os interceptos aleatórios do modelo misto simples, que podem
-ser visualizados na Figura \ref{fig:dotplot}.
+ser visualizados na Figura \ref{fig:dotplot}. A única exceção é o bairro H, que 
+foi suprimido da amostra para a confecção do modelo misto.
 
 Como se pode notar na Figura \ref{fig:dotplot}, os valores dos
 interceptos aleatórios para cada bairro giram em torno de zero, o seu
-valor médio. Como o Bairro H (com $A_L = 0,55$) foi omitido no ajusto
+valor médio. Como o Bairro H (com $A_V = 0,55$) foi omitido no ajusto
 do modelo, não há valores estimados para os efeitos aleatórios para este
 bairro.
 
-```{r dotplot, fig.cap="Efeitos aleatórios do modelo.", results='hide'}
-dotplot(ranef(fit_lmer))
-```
+A ínica informação a mais que se pode extrair do modelo de efeitos
+mistos simples é a componente de variância devido à localidade, separada da
+variância ao nível dos imóveis, o que pode ser visto na tabela
+\ref{tab:variancias}.
 
 ```{r somaitcpt}
 kable(t(re$Bairro + fe[1]),
@@ -572,13 +692,8 @@ kable(t(re$Bairro + fe[1]),
       caption = "Valores dos interceptos para cada bairro.",
       booktabs = TRUE,
       row.names = FALSE) %>%
-  kable_styling(font_size = 10)
+  kable_styling(font_size = 10, latex_options = "HOLD_position")
 ```
-
-A ínica informação a mais que se pode extrair do modelo de efeitos
-mistos é a componente de variância devido à localidade, separada da
-variância ao nível dos imóveis, o que pode ser visto na tabela
-\ref{tab:variancias}.
 
 ```{r variancias}
 vc <- VarCorr(fit_lmer)
@@ -598,54 +713,45 @@ kable(vc[, -2:-3],
       format.args = list(big.mark = ".", decimal.mark = ","),
       caption = "Efeitos randômicos do modelo misto.", 
       booktabs = T) %>%
-  kable_styling(latex_options = "striped")
+  kable_styling(latex_options = c("striped", "HOLD_position"))
+```
+
+```{r dotplot, fig.cap="Efeitos aleatórios do modelo.", results='hide'}
+dotplot(ranef(fit_lmer))
 ```
 
 Pode-se notar que a variância devido à localidade é relevante para o
 modelo, haja vista que a variância devido à localidade é maior do que a
 variância devido às características dos imóveis.
 
-Nos modelos onde houve a inclusão da variável Área Livre ($A_L$), seu
+Nos modelos onde houve a inclusão da variável Área Verde ($A_V$), seu
 coeficiente foi bem estimado: o valor da influência das áreas verdes,
-simulado como aumento R\$ 30,00/m2 a cada ponto percentual a mais de
+simulado como aumento R\$ 40,00/m2 a cada ponto percentual a mais de
 áreas verdes no bairro do imóvel, foi precisamente estimado.
 
-Para o modelo de Mundlak, a estimação do coeficiente contextual
-($\beta_{1C}$) foi insignificante. Isto era esperado, dado que a
-variável Área foi simulada da mesma maneira para todos os bairros. Em
-outras palavras, a simulação foi feita como se os imóveis em todos os
-bairros tivessem a mesma distribuição (normal) com mesma média e
-desvio-padrão. Isto dificilmente ocorrerá na prática da elaboração de
-PVG's. Aqui pptou-se, porém, por apresentar desta maneira para se
-facilitar a compreensão dos modelos.
+Para o modelo de Mundlak, a estimação do coeficiente contextual ($\beta_{1C}$)
+também resultou significante, conforme esperado, já que os dados foram gerados
+com áreas médias diferentes para cada bairro. 
 
-Deve-se notar a flexibilidade deste tipo de formulação: quando não
-existe na realidade o efeito esperado pela formulação, o coeficiente
-resultará insignificante. Diz-se em estatística que o modelo degenera,
-ou seja, o modelo com a formulação de Mundlak se degenera para uma
-formulação mais simples. Basta remover este termo da modelagem para
-obter-se o modelo mais correto para o caso. Portanto, na prática,
-deve-se partir da formulação mais complexa, no caso a de Mundlak, e
-observar se os resultados obtidos são significantes. Caso positivo,
-mantem-se o modelo. Caso contrário, descarta-se o termo insignificante.
+Deve-se ponderar que, caso os dados não tivessem a estrutura esperada para a 
+formulação adotada, haveria degeneração dos modelos. Por exemplo, caso não 
+houvesse de fato variância alguma entre os bairros, ou seja, se o pertencimento
+a um determinado agrupamento não afetar na formação final de preços, o valor
+estimado para o desvio-padrão do efeito aleatório $\upsilon$ seria igual a zero, 
+*i. e.* $\hat \sigma_\upsilon = 0$ [@Batesbook, 10-11] situação em que o
+modelo misto degenera para um modelo de regressão linear ordinária. No caso da
+formulação de Mundlak, caso não houvesse o efeito contextual, a variável de
+contexto não apresentaria significância, ou seja, deveria ser removida do modelo,
+fazendo com que o modelo degenere para um modelo misto simples.
 
-Essa mesma degeneração ocorre com os modelos de efeitos mistos se não
-houver de fato variabilidade entre os agrupamentos. Fosse o caso da
-localização por bairros não afetar na formação final de preços, o valor
-estimado para o desvio-padrão do efeito aleatório $\upsilon$ seria
-igual a zero, \emph{i. e.} $\hat \sigma_\upsilon = 0$ (BATES,
-\protect\hyperlink{ref-Batesbook}{2010}, pp. 10--11) situação em que o
-modelo misto degenera para um modelo de regressão linear ordinária.
-
-Outra maneira de se testar a pertinência da formulação de Mundlak seria
-através da Análise de Variância. A tabela \ref{tab:anova} faz a
-comparação entre o modelo de efeitos mistos sem variáveis de segundo
-nível ( primeira linha), com a variável de segundo nível $A_V$
-(segunda linha) e com a formulação de Mundlak (terceira linha).
-Percebe-se que é significante a melhora advinda da adição de um novo
-parâmetro no segundo modelo, porém não é significante a adoção de um
-novo parâmetro pela formulação de Mundlakm, o que se nota nos p-valores
-constantes da última coluna.
+Outra maneira de se testar a pertinência da formulação de Mundlak seria através
+da Análise de Variância. A tabela \ref{tab:anova} faz a comparação entre o
+modelo de efeitos mistos sem variáveis de segundo nível (primeira linha), com a
+variável de segundo nível $A_V$ (segunda linha) e com a formulação de Mundlak
+(terceira linha). Percebe-se que é significante a melhora advinda da adição de
+um novo parâmetro no segundo modelo, assim como também é significante a adoção 
+de um novo parâmetro pela formulação de Mundlak, o que se nota nos baixos 
+p-valores constantes da última coluna (zero).
 
 ```{r anova}
 kable(anova(fit_lmer, fit_lmer2, mundlak),
@@ -660,38 +766,41 @@ Por último, porém não menos relevante, percebe-se que este modelo tem
 critérios de informação de Akaike (AIC) e de Bayes (BIC) melhores que os
 dois modelos iniciais.
 
-Nas Figuras \ref{fig:pr} e \ref{fig:pr1} podem ser vistos os gráficos
-de densidades para os parâmetros estimados pelos modelos de efeitos
-mistos simples e com variável de segundo nível, respectivamente. Nota-se
-que a ausência da variável de segundo nível levou o modelo de efeitos
-mistos simples a uma má estimação da distribuição da variável
-$\sigma_\upsilon$ (no gráfico $\sigma_1$), ficando esta longe da
-normalidade. Com o acréscimo da variável de segundo nível esta variável
-ficou com magnitude bem menor, ou seja, a introdução da variável de
-segundo nível reduziu a variação não-explicada pelo modelo.
+Nas Figuras \ref{fig:pr}, \ref{fig:pr1} e \ref{fig:pr2} podem ser vistos os
+gráficos de densidades para os parâmetros estimados pelos modelos de efeitos
+mistos simples, com variável de segundo nível e com formulação de Mundlak,
+respectivamente. Nota-se que a ausência da variável de segundo nível levou o
+modelo de efeitos mistos simples a uma má estimação da distribuição da variável
+$\sigma_\upsilon$ (no gráfico $\sigma_1$), que apresentou uma longa cauda, com
+valores possíveis entre aproximadamente 400 e 1400.
 
-```{r pr, fig.cap="Densidades dos parâmetros do modelo de efeitos mistos simples."}
+Com o acréscimo da variável de segundo nível esta variável ficou com magnitude
+bem menor, ou seja, a introdução da variável de segundo nível reduziu a variação
+não-explicada pelo modelo. Por fim, a introdução da variável contextual reduziu
+ainda mais a variação não-explicada, gerando uma estimação precisa da variância
+do termo aleatório $\sigma_\upsilon$.
+
+```{r pr, fig.cap="Densidades dos parâmetros do modelo de efeitos mistos simples.", out.width="50%", fig.width=4}
 densityplot(pr)
 ```
 
-```{r pr1, fig.cap="Densidades dos parâmetros do modelo de efeitos mistos com variável de segundo nível."}
+```{r pr1, fig.cap="Densidades dos parâmetros do modelo de efeitos mistos com variável de segundo nível.", out.width="75%"}
 densityplot(pr1)
 ```
-```{r pr2, fig.cap="Densidades dos parâmetros do modelo de Mundlak."}
+```{r pr2, fig.cap="Densidades dos parâmetros do modelo de Mundlak.", out.width="75%"}
 densityplot(pr2)
 ```
 
 ## Previsão de Valores
 
 Para ilustrar como os modelos mistos podem ser utilizados no contexto de
-predição, foram elaboradas previsões no bairro H, que havia sido
-propositalmente excluído no ajuste dos modelos mistos, com os diversos
-modelos apresentados.
+predição, foram elaboradas previsões no bairro H, que havia sido propositalmente
+excluído no ajuste dos modelos mistos, com os diversos modelos apresentados.
 
 Também foram utilizados o modelo de efeitos fixos e o modelo misto com a
-variável de segundo nível $A_V$ para a previsão de valores de
-lote-padrão para os diversos bairros, inclusive para o bairro H, não
-utilizado para a confecção dos modelos mistos.
+variável de segundo nível $A_V$ para a previsão de valores de lote-padrão para
+os diversos bairros, inclusive para o bairro H, não utilizado para a confecção
+dos modelos mistos.
 
 ### Previsão de dados no bairro H
 
@@ -886,16 +995,19 @@ fitted_G <- predictInterval(fit_lmer,
                             newdata = lote_padrao_G,
                             which = "all", 
                             seed = seed)
+fitted_G$effect <- c("Combinados", "Bairro (aleatórios)", "Fixos")
 ```
 
 ```{r pred1}
 kable(fitted_G,
-      caption = "Previsão de valores com o modelos de efeitos mistos simples.",
+      caption = "Previsão de valores para o lote padrão$^1$.",
       digits = 2,
       format.args = list(big.mark = ".", decimal.mark = ","),
       booktabs = TRUE,
       col.names = c("Efeitos", "Valor Central", "Limite Superior", "Limite Inferior", "Observações")) %>%
-  kable_styling(latex_options = c("striped", "HOLD_position"))
+  kable_styling(latex_options = c("striped", "HOLD_position")) %>%
+   footnote(number = "Para o bairro G, a partir do modelo misto simples.", 
+            number_title = "Nota: ", footnote_as_chunk = T)
 ```
 
 A tabela \ref{tab:pred2} mostra o intervalo de predição para o
@@ -906,16 +1018,19 @@ fitted_H <- predictInterval(fit_lmer2,
                             newdata = lote_padrao_H,
                             which = "all",
                             seed = seed)
+fitted_H$effect <- c("Combinados", "Bairro (aleatórios)", "Fixos")
 ```
 
 ```{r pred2}
 kable(fitted_H,
-      caption = "Previsão de valores com o modelos de efeitos mistos com variável de segundo nível.",
+      caption = "Previsão de valores para o lote padrão$^1$.",
       digits = 2,
       format.args = list(big.mark = ".", decimal.mark = ","),
       booktabs = TRUE,
       col.names = c("Efeitos", "Valor Central", "Limite Superior", "Limite Inferior", "Observações")) %>%
-  kable_styling(latex_options = c("striped", "HOLD_position"))
+  kable_styling(latex_options = c("striped", "HOLD_position"))%>%
+   footnote(number = "Para o bairro H, a partir do modelo misto com variável de 2º nível.",
+            number_title = "Nota: ", footnote_as_chunk = T)
 ```
 
 A tabela \ref{tab:pred3} mostra o intervalo de predição para o lote-padrão no
@@ -926,16 +1041,19 @@ fitted_H_Mundlak <- predictInterval(mundlak,
                             newdata = lote_padrao_H,
                             which = "all",
                             seed = seed)
+fitted_H_Mundlak$effect <- c("Combinados", "Bairro (aleatórios)", "Fixos")
 ```
 
 ```{r pred3}
 kable(fitted_H_Mundlak,
-      caption = "Previsão de valores com o modelo de Mundlak.",
+      caption = "Previsão de valores para o lote padrão$^1$.",
       digits = 2,
       format.args = list(big.mark = ".", decimal.mark = ","),
       booktabs = TRUE,
       col.names = c("Efeitos", "Valor Central", "Limite Superior", "Limite Inferior", "Observações")) %>%
-  kable_styling(latex_options = c("striped", "HOLD_position"))
+  kable_styling(latex_options = c("striped", "HOLD_position")) %>%
+   footnote(number = "Para o bairro H, a partir do modelo com formulação de Mundlak.",
+            number_title = "Nota: ", footnote_as_chunk = T)
 ```
 
 Para efeitos de comparação, a tabela \ref{tab:pred4} mostra o intervalo
@@ -943,27 +1061,28 @@ de predição para o bairro H calculado com o modelo de efeitos fixos.
 
 ```{r}
 p <- as.data.frame(predict(fit, lote_padrao_H, interval = "prediction", level = 0.80))
-p$Efeito <- "Fixo"
+p$Efeito <- "Fixos"
 p <- p[, c(4, 1, 3, 2)]
 ```
 
 ```{r pred4}
 kable(p,
-      caption = "Intervalo de Predição com o modelo de efeitos fixos",
+      caption = "Previsão de valores para o lote padrão$^1$",
       digits = 2,
       format.args = list(big.mark = ".", decimal.mark = ","),
       booktabs = TRUE,
       col.names = c("Efeitos", "Valor Central", "Limite Superior", "Limite Inferior")) %>%
-  kable_styling(latex_options = c("striped", "HOLD_position"))
+  kable_styling(latex_options = c("striped", "HOLD_position")) %>% 
+  footnote(number = "Para o bairro H, a partir do modelo de efeitos fixos.",
+            number_title = "Nota: ", footnote_as_chunk = T)
 ```
 
-Nota-se que os intervalos de predição do modelo de efeitos fixos
-apresentados na tabela \ref{tab:pred3} e o intervalo de predição total
-combinado (linha 1) do modelo de efeitos mistos com variável de segundo
-nível praticamente se equivalem. Deve-se lembrar, porém, que para o
-modelo de efeitos fixos foram utilizados 10\% mais dados e que o modelo
-de efeitos mistos não utilizou qualquer dado amostral proveninente do
-bairro H.
+Nota-se que os intervalos de predição do modelo de efeitos fixos apresentados na
+tabela \ref{tab:pred4} e o intervalo de predição total combinado do modelo com
+formulação de Mundlak (linha 1 da tabela \ref{tab:pred3}) praticamente se
+equivalem. Deve-se lembrar, porém, que para o modelo de efeitos fixos foram
+utilizados 10\% mais dados e que o modelo de efeitos mistos não utilizou
+qualquer dado amostral proveninente do bairro H.
 
 # Conclusão
 
@@ -992,23 +1111,18 @@ máximo este tipo de modelagem.
 
 Na análise de dados em seção transversal, como na elaboração de avaliações de
 precisão ou na elaboração de PVG's, deve ser utilizada, preferencialmente, a
-formulação de Mundlak, enquanto para dados em painéis, como na confecção de
+formulação de Mundlak, enquanto para dados em painel, como na confecção de
 índices de preços de imóveis, deve ser preferencialmente utilizada a formulação
 REWB.
 
 Na modelagem hierárquica ainda é possível incorporar outras hipóteses úteis,
-além dos interceptos aleatórios, como também coeficientes aleatórios, o que deve
+além dos interceptos aleatórios, como as inclinações aleatórias, o que deve
 ser tema de outro trabalho.
 
-Outra possibilidade é a modelagem em mais níveis hierárquicos. Não apenas os
+Outra possibilidade é a modelagem em mais níveis hierárquicos: não apenas os
 imóveis podem ser agrupados em bairros, mas também os bairros podem, por sua
-vez, ser agrupados em macrozonas urbanas, assim como estas podem ser agrupadas
-em cidades, as cidades em regiões e assim por diante. A execução de modelos tão
-complexos com efeitos fixos é praticamente inviável.
-
-Outra possibilidade é a modelagem dos dados ao longo do tempo, o que possibilita
-a sua utilização para a confecção de índices de preços de imóveis.
-
-# Sugestões para trabalhos futuros
+vez, serem agrupados em macrozonas urbanas, assim como estas podem ser agrupadas
+em cidades, estas, por sua vez, em regiões e assim por diante. O ajuste de 
+modelos tão complexos com efeitos fixos é inviável.
 
 # Referências {-}
