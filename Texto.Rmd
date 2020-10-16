@@ -2,9 +2,9 @@
 title: "Modelos mistos na Engenharia de Avaliações"
 subtitle: "Possibilidades e aplicações"
 author: 
-  - Luiz F. P. Droubi^[SPU/SC, lfpdroubi@gmail.com]
-  - Carlos Augusto Zilli^[IFSC, carlos.zilli@ifsc.edu.br]
-  - Norberto Hoccheim^[UFSC, hochheim@gmail.com]
+  - Luiz F. P. Droubi^[Engenheiro Civil e Cientista de Dados. Especialista em Auditoria, Avaliações e Perícias de Engenharia pelo IPOG. É mestrando em Gestão Territorial pela Universidade Federal de Santa Catarina (UFSC). É pesquisador  no Grupo de Engenharia de Avaliações e Perícias (GEAP-UFSC), lfpdroubi@gmail.com]
+  - Carlos Augusto Zilli^[Engenheiro Civil, Engenheiro de Segurança do Trabalho e Matemático. É especialista em Gestão de Obras e Projetos pela Universidade do Sul de Santa Catarina (UNISUL). É mestre em Gestão Territorial pela Universidade Federal de Santa Catarina (UFSC). É docente no Instituto Federal de Santa Catarina (IFSC) e pesquisador do Grupo de Engenharia de Avaliações e Perícias (GEAP), carlos.zilli@ifsc.edu.br]
+  - Norberto Hochheim^[Professor Titular do Departamento de Engenharia Civil da Universidade Federal de Santa Catarina (UFSC), é Engenheiro Civil e Mestre em Engenharia de Produção e Sistemas pela UFSC, Doutor pela Université de Nancy (França). Ministra disciplinas em cursos de graduação, especialização, mestrado e doutorado, entre elas *Engenharia de Avaliações*, *Planejamento Econômico e Financeiro* e *PVGs*, hochheim@gmail.com]
 date: "`r format(Sys.Date(), '%d/%m/%Y')`"
 output:
   pdf_document:
@@ -50,10 +50,26 @@ library(broom)
 library(appraiseR)
 ```
 
+# Resumo {-}
+
+Este trabalho visa a introdução aos modelos mistos ou hierárquicos, com foco
+para a aplicação na Engenharia de Avaliações. A modelagem de efeitos mistos pode
+ser bastante útil na Engenharia de Avaliações quando há presença de
+heterogeneidade amostral, especialmente no contexto da ocorrência de ausência de
+dados em número suficiente para uma determinada característica, situação em que
+a estimação por modelos mistos é mais eficiente. Além disto, com a modelagem 
+hierárquica se abre um campo muito interessante para a análise do impacto da
+presença de amenidades sobre os valores dos imóveis, possivelmente até embasando
+a realização de investimentos em infraestrutura e/ou intervenções urbanas com 
+fins de valorização dos imóveis, visando a recuperação das mais-valias. 
+Finalmente, os modelos mistos possuem grande aplicação para a análise de dados
+em séries temporais ou em painel, o que indica um grande potencial de aplicação
+destes modelos para a confecção de índices de preços de imóveis.
+
 # Introdução
 
 Na Engenharia de Avaliações, assim como em diversos ramos das ciências sociais,
-a abordagem padrão para lidar com a heteregoneidade amostral é a modelagem com
+a abordagem padrão para lidar com a heterogeneidade amostral é a modelagem com
 efeitos fixos. Este tipo de abordagem permite a segregação dos dados da amostra
 em diferentes agrupamentos, através da utilização de variáveis *dummies*[^1] que
 indicam a que agrupamento pertence cada dado amostral.
@@ -114,7 +130,7 @@ em regiões e assim por diante), o que possibilita a sua modelagem de maneira
 hierárquica. No entanto, se os dados se agrupam em diferentes grupamentos
 independentes, não aninhados, a modelagem hierárquica não se aplica, porém estes
 tipos de dados podem também ser modelados pelos modelos mistos. Em suma, todo
-modelo misto é um modelo hierárquico, mas o inverso não se aplica [@Bates].
+modelo hierárquico é um modelo misto, mas o inverso não se aplica [@Bates].
 
 ## Modelagem por efeitos fixos
 
@@ -123,10 +139,8 @@ Avaliações, assim como em diversas outras áreas da ciência [@bell2019, 1057]
 apesar desta terminologia não ser sempre empregada.
 
 Um modelo de efeitos fixos nada mais é do que um modelo em que a heterogeneidade 
-da amostra é "saneada" através da inclusão de variáveis *dummies*
-representando cada agrupamento de dados. Após a inclusão destas variáveis
-saneando a amostra, a estimação é feita pelo métodos dos mínimos quadrados 
-ordinários.
+da amostra é resolvida através da inclusão de variáveis *dummies*
+representando cada agrupamento de dados. Após a inclusão destas variáveis, a estimação é feita pelo métodos dos mínimos quadrados ordinários.
 
 A modelagem por efeitos fixos pode ser escrita conforme a equação \ref{eq:fixef},
 onde a variância entre os agrupamentos de dados (variância de nível mais alto)
@@ -136,6 +150,9 @@ onde a variância entre os agrupamentos de dados (variância de nível mais alto
 y_{ij} = \sum_{j=1}^{j}\beta_{0j}D_j + \beta_1 x_{ij} + \varepsilon_{ij}
 \end{equation}
 
+Onde $y_{ij}$ é a variável resposta, $i$ e $j$ se referem aos dois níveis de análise, com $i$ representando o nível dos indivíduos e $j$ o nível dos agrupamentos, $x_{ij}$ é uma (podem haver mais) variável explicativa com características variantes entre os indíviduos da amostra e $\varepsilon_{ij}$ é 
+um termo de erro, que são assumidos independentes e identicamente distribuídos (i.i.d), com distribuição supostamente normal, média zero e desvio-padrão $\sigma_{\varepsilon}^2$. 
+
 No entanto, uma outra maneira mais conveniente de escrever a formulação de 
 efeitos fixos, para a comparação que se pretende, equivalente à
 primeira, pode ser vista na equação \ref{eq:fixef2} [@bell2019, 1058]:
@@ -144,11 +161,7 @@ primeira, pode ser vista na equação \ref{eq:fixef2} [@bell2019, 1058]:
 y_{ij} = \beta_1 (x_{ij} - \bar{x}_j) + (\upsilon_j + \varepsilon_{ij}) 
 \end{equation}
 
-Onde $\upsilon_j$ é um termo discreto para cada agrupamento de dados[^3]. Os
-índices $i$ e $j$ se referem aos dois níveis de análise: $i$, neste caso,
-representa o nível dos indivíduos e $j$ o nível dos agrupamentos.
-$\varepsilon_{ij}$ é um termo de erro aleatório com distribuição supostamente
-normal, média zero e desvio-padrão $\sigma_{\varepsilon}^2$.
+Onde $\upsilon_j$ é um termo discreto para cada agrupamento de dados[^3]. 
 
 [^3]: O termo $\upsilon_j$ é o intercepto de cada agrupamento, quando se 
 ajusta um modelo sem intercepto.
@@ -183,21 +196,21 @@ y_{ij} = \beta_0 + \beta_1^{RE} x_{ij} + \beta_2 z_j + (\upsilon_j + \varepsilon
 \end{equation}
 
 No caso da equação \ref{eq:mixef}, o termo $\upsilon_j$ é um termo
-estocástico de efeitos aleatórios para os indivíduos, suposto
+estocástico de efeitos aleatórios para os agrupamentos, suposto
 normalmente distribuído e com média zero, ou seja
 $\upsilon_j \sim N(0, \sigma_{\upsilon}^2)$ [@bell2019, 1055]. A variável $x_{ij}$
 é uma variável de nível 1, variante entre os indivíduos e a variável $z_j$ é uma 
-variável de nível 2, invariante entre os agrupamentos, *i.e.* a variável $z_j$
+variável de nível 2, variante entre os agrupamentos, *i.e.* a variável $z_j$
 não é uma variável hedônica dos imóveis, mas uma variável que representa todo um
 grupo de imóveis [^4]. 
 
-[^4]: É possível utilizar os models mistos sem a utilização de qualquer variável 
+[^4]: É possível utilizar os modelos mistos sem a utilização de qualquer variável 
 de segundo nível, obtendo-se um modelo de interceptos aleatórios.
 
 Neste tipo de modelagem estimam-se, além dos coeficientes das 
 variáveis de nível mais baixo, $\beta_0$ e $\beta_1$, o(s) coeficiente(s) da(s) 
-variável(eis) de segundo nível $\beta_2$ e os parâmetros $\sigma_\upsilon^2$ e
-$\sigma_\varepsilon^2$, ou seja, as variâncias de primeiro e segundo nível, 
+variável(eis) de segundo nível $\beta_2$ e os parâmetros $\sigma_\varepsilon^2$ 
+e $\sigma_\upsilon^2$, ou seja, as variâncias de primeiro e segundo nível, 
 respectivamente.
 
 A diferença de nível entre as variáveis pode ser melhor compreendida ao
@@ -331,7 +344,7 @@ y_{ij} = \beta_0 + \beta_1 (x_{ij} - \bar{x}_j) + \beta_4 \bar{x}_j+ \beta_2 z_j
 \end{equation}
 
 Mais uma vez é possível, ainda, a adição de inclinações aleatórias nesta 
-formulação, obtendo-se assim a formulação mais genérica possíve, como pode ser
+formulação, obtendo-se assim a formulação mais genérica possível, como pode ser
 visto na equação \ref{eq:rewb2}:
 
 \begin{equation} \label{eq:rewb2}
@@ -347,19 +360,19 @@ variável $x$.
 
 Segundo Bell e Jones [-@bell2015, 143], um modelo de efeitos fixos pode ser
 visto como uma forma de modelo de efeitos mistos onde a variância nos níveis
-mais altos é restringida a infinito. Desta maneira, para Bell e Jones 
-[-@bell2015], os modelos de efeitos mistos são muito mais interessantes do que 
-os modelos de efeitos fixos, já que além de propiciarem todas as informações que 
-os modelos de efeitos fixos propiciam, eles ainda tem possibilidade de ir além e 
-fornecer outras informações que os modelos de efeitos fixos não fornecem, como a 
-separação dos efeitos de uma variável *entre*  os agrupamentos e *dentro* dos 
-agrupramentos. Para Bell *et al.* [-@bell2019, 1060], para o efeito *dentro* dos 
-agrupamentos, os resultados estimados pela formulação REWB ou pela formulação de 
-Mundlak serão rigorosamente os mesmos obtidos pelo modelo de efeitos fixos. No 
-entanto, enquanto os modelos de REWB e de Munlak fornecem informações a respeito 
-dos efeitos *entre* os agrupamentos, os modelos de efeitos fixos não são capazes 
-de fornecer qualquer informação a este respeito, já que a variância de nível 
-mais alto foi restringida.
+mais altos é restringida a infinito. Desta maneira, para Bell e Jones
+[-@bell2015], os modelos de efeitos mistos são muito mais interessantes do que
+os modelos de efeitos fixos, já que além de propiciarem todas as informações que
+os modelos de efeitos fixos propiciam, eles ainda tem possibilidade de ir além e
+fornecer outras informações que os modelos de efeitos fixos não fornecem, como a
+separação dos efeitos de uma variável *entre*  os agrupamentos e *dentro* dos
+agrupramentos. Para Bell *et al.* [-@bell2019, 1060], para o efeito *dentro* dos
+agrupamentos, os resultados estimados pela formulação REWB ou pela formulação de
+Mundlak serão rigorosamente os mesmos obtidos pelo modelo de efeitos fixos. No
+entanto, enquanto os modelos de REWB e de Mundlak fornecem informações a
+respeito dos efeitos *entre* os agrupamentos, os modelos de efeitos fixos não
+são capazes de fornecer qualquer informação a este respeito, já que a variância
+de nível mais alto foi restringida.
 
 Deve ser feita uma distinção também entre os objetivos da modelagem: na 
 Engenharia de Avaliações, se o objetivo for determinar o valor de um imóvel em
@@ -478,8 +491,8 @@ a partir de simulação com o auxílio do software **R**.
 Os dados foram criados conforme a equação abaixo \ref{eq:EC1} e \ref{eq:EC2}, abaixo:
 
 \begin{align}
-ValorUnitario &= \beta_{0j} - 3,0 Area + \varepsilon_{ij}  \label{eq:EC1}\\
-\beta_{0j} &= \beta_0 + 4000 A_{Vj} + 5 \overline{Area_j} + \upsilon_j \label{eq:EC2}
+ValorUnitario &= \beta_{0j} - 3,0 \cdot Area + \varepsilon_{ij}  \label{eq:EC1}\\
+\beta_{0j} &= \beta_0 + 4000 \cdot A_{Vj} + 5,0 \cdot \overline{Area_j} + \upsilon_j \label{eq:EC2}
 \end{align}
 
 Onde:
@@ -561,7 +574,8 @@ Com os dados gerados, foi elaborado um modelo de efeitos fixos sem
 intercepto, apenas para que fique claro o valor do intercepto aleatório
 de cada bairro. Para dar interpretação a estes interceptos aleatórios, a
 variável $Area$ foi centralizada em relação à área de um lote-padrão,
-considerado de 400 $m^2$[^5]
+considerado de 400 $m^2$, desta maneira o valor do intercepto de cada bairro
+é igual ao valor do lote-padrão para este bairro[^5].
 
 [^5]: A centralização de variáveis aqui presente não pretende nenhuma separação 
 entre efeitos \emph{within} e  \emph{between}, mas apenas possibilitar uma 
@@ -680,7 +694,7 @@ valor médio. Como o Bairro H (com $A_V = 0,55$) foi omitido no ajusto
 do modelo, não há valores estimados para os efeitos aleatórios para este
 bairro.
 
-A ínica informação a mais que se pode extrair do modelo de efeitos
+A única informação a mais que se pode extrair do modelo de efeitos
 mistos simples é a componente de variância devido à localidade, separada da
 variância ao nível dos imóveis, o que pode ser visto na tabela
 \ref{tab:variancias}.
@@ -1095,7 +1109,7 @@ Neste trabalho foi mostrado como a Engenharia de Avaliações pode se valer da
 modelagem hierárquica ou mista para a confecção de PVG's, com a utilização de
 modelos com interceptos aleatórios, especialmente para estimação de valores para
 lotes-padrão em agrupamentos não presentes na amostra, através da utilização de
-variáveis de segundo nível que \emph{expliquem} a variabilidade entre os bairros
+variáveis de segundo nível que *expliquem* a variabilidade entre os bairros
 ou outros agrupamentos. Tais modelos são mais complexos e ao mesmo tempo
 elegantes, dividindo a variabilidade em diversos níveis, deixando claro ao
 analista de onde advém a variabilidade dos preços.
