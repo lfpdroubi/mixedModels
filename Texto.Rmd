@@ -1139,4 +1139,29 @@ vez, serem agrupados em macrozonas urbanas, assim como estas podem ser agrupadas
 em cidades, estas, por sua vez, em regiões e assim por diante. O ajuste de 
 modelos tão complexos com efeitos fixos é inviável.
 
+# Sugestão para trabalhos futuros
+
+Pretende-se aplicar os modelos mistos para a avaliação em massa de terrenos de
+marinha para todo o estado de SC, a partir de um único modelo, agrupando-se os
+imóveis em logradouros-trechos (ou, talvez, setores censitários) ($j$), que por 
+sua vez serão agrupados em cidades ($k$), estas agrupadas em microregiões ($l$) 
+e, finalmente, estas últimas, por sua vez, agrupadas em mesoregiões ($m$), 
+utilizando-se variáveis relativas aos imóveis ($V_1, V_2,...$), aos 
+logradouros-trechos ou setores censitários ($W_1, W_2, ...$), às cidades 
+($X_1, X_2, ...$), às microrregiões ($Y_1, Y_2, ...$) e às mesorregiões 
+($Z_1, Z_2, ...$).
+
+As equações abaixo ilustram este tipo de modelagem três em níveis hierárquicos 
+distintos:
+
+\begin{align*}
+VU_{ijk}  &= \beta_{0jk} + \beta_{1jk} V_{1ijk} + \beta_{2jk} V_{2ijk} + \cdots + r_{ijk}\\ 
+\beta_{0jk} &= \gamma_{00k} + \gamma_{01k}W_{1jk} + \gamma_{02k}W_{2jk} + \cdots+ s_{0jk}\\ 
+\beta_{1jk} &= \gamma_{10k} + \gamma_{11k}W_{1jk} + \gamma_{12k}W_{2jk} + \cdots+ s_{1jk}\\ 
+\vdots \\
+\gamma_{00k} &= \eta_{000} + \eta_{001} X_{1k} + \eta_{002} X_{2k} + \cdots +  t_{00k}\\ 
+\gamma_{01k} &= \eta_{010} + \eta_{011} X_{1k} + \eta_{012} X_{2k} + \cdots +  t_{01k}\\ 
+\vdots
+\end{align*}
+
 # Referências {-}

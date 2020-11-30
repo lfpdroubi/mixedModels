@@ -1,0 +1,7 @@
+base
+tibble
+sjmisc
+Matrix
+lme4
+stargazer
+lattice
